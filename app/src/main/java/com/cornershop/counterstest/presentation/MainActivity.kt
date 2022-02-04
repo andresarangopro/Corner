@@ -1,12 +1,12 @@
-package com.cornershop.counterstest.presentation.welcome
+package com.cornershop.counterstest.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.cornershop.counterstest.R
 
-class WelcomeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome)
+        setContentView(R.layout.activity_main)
     }
 }
