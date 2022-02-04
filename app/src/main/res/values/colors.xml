@@ -5,6 +5,7 @@
     <color name="black">#212121</color>
     <color name="gray">#888B90</color>
     <color name="light_gray">#DCDCDF</color>
+    <color name="transparent">#0fff</color>
 
     <color name="welcome_background">#F9F9F9</color>
 </resources>

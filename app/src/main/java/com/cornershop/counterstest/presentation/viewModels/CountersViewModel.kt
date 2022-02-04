@@ -1,4 +1,6 @@
 package com.cornershop.counterstest.presentation.viewModels
 
-class CountersViewModel {
+import androidx.lifecycle.ViewModel
+
+class CountersViewModel(): ViewModel() {
 }

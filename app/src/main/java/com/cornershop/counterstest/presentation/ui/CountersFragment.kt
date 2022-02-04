@@ -6,14 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cornershop.counterstest.R
-
+import com.cornershop.counterstest.databinding.FragmentCountersBinding
+import com.cornershop.counterstest.databinding.FragmentWelcomeBinding
+import com.cornershop.counterstest.presentation.utils.onQueryTextChanged
 
 
 class CountersFragment : Fragment() {
 
+    private var _binding: FragmentCountersBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.searchView.onQueryTextChanged {
+
         }
     }
 
@@ -21,8 +32,8 @@ class CountersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_counters, container, false)
+        _binding = FragmentCountersBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     companion object {
