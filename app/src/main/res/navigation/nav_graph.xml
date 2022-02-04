@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.cornershop.counterstest.presentation.welcome.WelcomeFragment"
+        android:name="com.cornershop.counterstest.presentation.ui.WelcomeFragment"
         android:label="WelcomeFragment" />
 </navigation>
