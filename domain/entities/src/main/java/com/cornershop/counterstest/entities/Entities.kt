@@ -1,4 +1,7 @@
 package com.cornershop.counterstest.entities
 
-class Entities {
-}
+data class Counter(
+    var id:String,
+    var title:String,
+    var count:Int
+)

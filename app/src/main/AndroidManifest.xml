@@ -9,7 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CountersNormal"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:allowBackup="false">
+        android:allowBackup="false"
+        android:name=".presentation.CountersApplication"    >
         <activity
             android:name=".presentation.MainActivity"
             android:theme="@style/Theme.CountersWelcome">

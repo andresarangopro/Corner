@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -58,6 +60,10 @@ dependencies {
     androidTestImplementation jUnitExt
     androidTestImplementation espresso
 
+    //dagger hilt
+    implementation daggerHilt
+    kapt 'com.google.dagger:hilt-compiler:2.38.1'
+
     //coroutines tests
     testImplementation coroutinesTest
     testImplementation coreTestingAndroidx
@@ -65,6 +71,10 @@ dependencies {
     //Mockito
     testImplementation mockitoKotlin
     testImplementation mockitoInline
+
+    //coroutines implementation
+    implementation coroutinesCore
+    implementation coroutinesAndroid
 
 
     // Kotlin
