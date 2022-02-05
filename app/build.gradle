@@ -58,6 +58,15 @@ dependencies {
     androidTestImplementation jUnitExt
     androidTestImplementation espresso
 
+    //coroutines tests
+    testImplementation coroutinesTest
+    testImplementation coreTestingAndroidx
+
+    //Mockito
+    testImplementation mockitoKotlin
+    testImplementation mockitoInline
+
+
     // Kotlin
     implementation navigationFragment
     implementation navigationUI

@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cornershop.counterstest.R
+import androidx.navigation.fragment.findNavController
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
-import com.cornershop.counterstest.databinding.FragmentWelcomeBinding
 import com.cornershop.counterstest.presentation.utils.onQueryTextChanged
 
 
@@ -25,6 +24,11 @@ class CountersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.searchView.onQueryTextChanged {
 
+        }
+
+        binding.btnAddCounter.setOnClickListener {
+            val action= CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment()
+            findNavController().navigate(action)
         }
     }
 

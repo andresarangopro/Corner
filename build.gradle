@@ -47,6 +47,14 @@ ext{
     espressoVersion = "3.3.0"
     nav_version = "2.4.0"
 
+    //coroutines versions
+    coroutinesCoreVersion = "1.3.9"
+    coroutinesAndroidVersion = "1.3.9"
+    coroutinesTestVersion = "1.3.9"
+    mockitoKotlinVersion = "2.1.0"
+    mockitoInlineVersion = "2.21.0"
+    coreTestingVersion = "2.1.0"
+
     // build/runtime dependencies
     jetbrainsKotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     androidxCoreKtx = "androidx.core:core-ktx:$androidxCoreKtxVersion"
@@ -56,6 +64,18 @@ ext{
     retrofit =  "com.squareup.retrofit2:retrofit:$retrofitVersion"
     navigationFragment = "androidx.navigation:navigation-fragment-ktx:$nav_version"
     navigationUI = "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //coroutines implementation
+    coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
+    coroutinesAndroid =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroidVersion"
+
+    //coroutines tests
+    coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
+    //core testing
+    coreTestingAndroidx = "androidx.arch.core:core-testing:$coreTestingVersion"
+
+    mockitoKotlin =  "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    mockitoInline =  "org.mockito:mockito-inline:$mockitoInlineVersion"
 
     // test dependencies
     jUnit =  "junit:junit:$jUnitVersion"
