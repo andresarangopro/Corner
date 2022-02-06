@@ -8,4 +8,5 @@
     <dimen name="margin_normal_3">32dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="search_view_radius">5dp</dimen>
+    <dimen name="font_size_small">15sp</dimen>
 </resources>

@@ -44,8 +44,10 @@ class CountersFragment : Fragment() {
         event?.getContentIfNotHandled()?.let { navigation ->
             when(navigation){
                 is CountersViewModel.CounterNavigation.setLoaderState-> navigation.run {
-                    /*      true -> loader.visibility = View.VISIBLE
-                        else -> loader.visibility = View.GONE*/
+                     when(state){
+                         true -> binding.loader.visibility = View.VISIBLE
+                         else -> binding.loader.visibility = View.GONE
+                     }
                 }
 
                 is CountersViewModel.CounterNavigation.setCounterList->navigation.run{
@@ -55,15 +57,7 @@ class CountersFragment : Fragment() {
         }
     }
 
-    private fun observePlaylists(view: View) {
-        viewModel.counterList.observe(this as LifecycleOwner, { counterList ->
-            if (counterList.getOrNull() != null)
-                setupList(view.recyclerView, counterList.getOrNull()!!)
-            else {
-                //TODO
-            }
-        })
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,7 +81,6 @@ class CountersFragment : Fragment() {
 
         setupViewModel()
         viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
-        observePlaylists(binding.root)
         return binding.root
     }
 

@@ -17,4 +17,23 @@
     <style name="Theme.CountersWelcome" parent="Theme.CountersNormal">
         <item name="android:windowBackground">@color/welcome_background</item>
     </style>
+
+    <style name="Theme.GrayMediumTextView" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.OrangeMediumTextView" parent="Theme.GrayMediumTextView">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="Theme.NormalBoldTextView" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.BoldTextView" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>

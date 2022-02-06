@@ -30,18 +30,41 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_normal_1"
-        android:layout_marginBottom="@dimen/margin_normal_1"
         app:layout_constraintBottom_toTopOf="@+id/btnAddCounter"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.0"
-        tools:listitem="@layout/item_counter"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loader"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            app:indicatorColor="@color/orange" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_normal_1"
+            android:layout_marginBottom="@dimen/margin_normal_1"
+            app:layout_constraintBottom_toTopOf="@+id/btnAddCounter"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/guideline5"
+            tools:listitem="@layout/item_counter" />
+
+    </FrameLayout>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -59,14 +82,16 @@
 
     <TextView
         android:id="@+id/textView"
+        style="@style/Theme.NormalBoldTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/n_items"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4" />
+        app:layout_constraintStart_toStartOf="@+id/guideline13" />
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/Theme.GrayMediumTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal_1"
@@ -95,5 +120,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.13381995" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
