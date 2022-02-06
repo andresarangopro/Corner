@@ -52,6 +52,9 @@ ext{
     okHttpLoggingInterceptorVersion = '4.7.2'
     daggerhiltversion = "2.38.1"
     daggerhiltCompilerversion = "2.38.1"
+    lifecycleVersion = "2.3.0-beta01"
+    lifecycleLiveDataVersion = "2.2.0"
+    okhttp3Version ="1.0.0"
 
     //coroutines versions
     coroutinesCoreVersion = "1.3.9"
@@ -63,6 +66,9 @@ ext{
 
     //OkHttp
     okHttpInterceptorLib = "com.squareup.okhttp3:logging-interceptor:$okHttpLoggingInterceptorVersion"
+
+    //okhttp3
+    okhttp3IdlingResources = "com.jakewharton.espresso:okhttp3-idling-resource:$okhttp3Version"
 
     //Retrofit
     retrofitGsonLib = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -86,6 +92,12 @@ ext{
     //coroutines implementation
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
     coroutinesAndroid =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroidVersion"
+
+    //lifecycle
+    lifeCycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+
+    //lifecycle live data
+    lifeCycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleLiveDataVersion"
 
     //coroutines tests
     coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"

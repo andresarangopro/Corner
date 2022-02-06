@@ -45,6 +45,12 @@ android {
 }
 
 dependencies {
+    //Modules
+    //Project
+    implementation project(":domain:usecase")
+    implementation project(":domain:entities")
+    implementation project(":data")
+    implementation project(":framework:requestmanager")
 
     // build/runtime dependencies
     implementation jetbrainsKotlin
@@ -54,6 +60,16 @@ dependencies {
     implementation androidxConstraintLayout
     implementation retrofit
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //lyfecycle_viewmodel
+    implementation lifeCycleViewModel
+
+    //lifecycle live data
+    implementation lifeCycleLiveData
+
+    //coroutines implementation
+    implementation coroutinesCore
+    implementation coroutinesAndroid
 
     // test dependencies
     testImplementation jUnit
@@ -71,10 +87,6 @@ dependencies {
     //Mockito
     testImplementation mockitoKotlin
     testImplementation mockitoInline
-
-    //coroutines implementation
-    implementation coroutinesCore
-    implementation coroutinesAndroid
 
 
     // Kotlin
