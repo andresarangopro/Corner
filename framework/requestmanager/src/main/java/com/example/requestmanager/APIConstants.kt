@@ -8,4 +8,8 @@ object APIConstants {
     const val ENDPOINT_COUNTER ="counter"
     const val ENDPOINT_COUNTER_INC ="inc"
     const val ENDPOINT_COUNTER_DEC ="dec"
+
+
+    const val TITLE="title"
+    const val ID="id"
 }

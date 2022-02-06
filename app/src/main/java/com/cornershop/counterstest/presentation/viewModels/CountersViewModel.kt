@@ -32,20 +32,6 @@ class CountersViewModel(
         }
     }
 
-    sealed class CounterEvent {
-        object testEvent : CounterEvent()
-        data class CreateCounter(
-            val title: String,
-            val author: String,
-            val description: String
-        ) : CounterEvent()
-    }
-
-    sealed class CounterNavigation(){
-        data class setLoaderState(val state:Boolean):CounterNavigation()
-        data class setCounterList(val listCounter:List<Counter>?):CounterNavigation()
-    }
-
     override fun manageEvent(event: CounterEvent) {
         when(event){
             is CounterEvent.testEvent->{
@@ -53,8 +39,64 @@ class CountersViewModel(
             }
 
             is CounterEvent.CreateCounter->{
+                createCounter(event.title)
+            }
 
+            is CounterEvent.IncreaseCounter->{
+                increaseCounter(event.id)
+            }
+
+            is CounterEvent.DecreaseCounter->{
+                decreaseCounter(event.id)
             }
         }
+    }
+
+     fun createCounter(title:String){
+         viewModelScope.launch {
+             counterUseCases.createCounterUseCase(title).collect{
+                 if(it.isSuccess){
+                        Log.d("CounterCreated","Success")
+                 }else{
+                     Log.d("CounterCreated","errr ")
+                 }
+             }
+         }
+    }
+
+    fun increaseCounter(id: String){
+        viewModelScope.launch {
+            counterUseCases.increaseCounterUseCase(id).collect{
+                if(it.isSuccess){
+                    Log.d("CounterCreated","Success")
+                }else{
+                    Log.d("CounterCreated","errr ")
+                }
+            }
+        }
+    }
+
+    fun decreaseCounter(id: String){
+        viewModelScope.launch {
+            counterUseCases.decreaseCounterUseCase(id).collect{
+                if(it.isSuccess){
+                    Log.d("CounterCreated","Success")
+                }else{
+                    Log.d("CounterCreated","errr ")
+                }
+            }
+        }
+    }
+
+    sealed class CounterEvent {
+        object testEvent : CounterEvent()
+        data class CreateCounter(val title: String) : CounterEvent()
+        data class IncreaseCounter( val id: String ) : CounterEvent()
+        data class DecreaseCounter(val id: String) : CounterEvent()
+    }
+
+    sealed class CounterNavigation(){
+        data class setLoaderState(val state:Boolean):CounterNavigation()
+        data class setCounterList(val listCounter:List<Counter>?):CounterNavigation()
     }
 }

@@ -48,18 +48,29 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.02872777" />
 
-    <com.google.android.material.textfield.TextInputEditText
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etLayoutCounter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:hint="@string/counter_name_hint"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline12" />
+        app:layout_constraintTop_toTopOf="@+id/guideline12">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/counter_name_hint"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
