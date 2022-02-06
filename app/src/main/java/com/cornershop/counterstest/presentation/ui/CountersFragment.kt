@@ -30,6 +30,8 @@ class CountersFragment : Fragment() {
     private var _binding: FragmentCountersBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var counterAdapter:CounterRecyclerViewAdapter
+
     lateinit var viewModel: CountersViewModel
 
     @Inject
@@ -53,6 +55,10 @@ class CountersFragment : Fragment() {
                 is CountersViewModel.CounterNavigation.setCounterList->navigation.run{
                     setupList(binding.recyclerView, listCounter)
                 }
+
+                is CountersViewModel.CounterNavigation.updateCounterList ->navigation.run {
+                    counterAdapter.updateData(listCounter)
+                }
             }
         }
     }
@@ -61,8 +67,6 @@ class CountersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         binding.searchView.onQueryTextChanged {
 
         }
@@ -71,6 +75,8 @@ class CountersFragment : Fragment() {
             val action= CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment()
             findNavController().navigate(action)
         }
+
+
     }
 
     override fun onCreateView(
@@ -94,9 +100,14 @@ class CountersFragment : Fragment() {
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
+            counterAdapter = CounterRecyclerViewAdapter(playlists,{id->},
+                {id->
+                    viewModel.postEvent(CountersViewModel.CounterEvent.IncreaseCounter(id))},
+                { id->
+                    viewModel.postEvent(CountersViewModel.CounterEvent.DecreaseCounter(id))
+                })
 
-            adapter = CounterRecyclerViewAdapter(playlists,{id->
-            })
+            adapter = counterAdapter
         }
     }
 

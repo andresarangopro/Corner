@@ -52,11 +52,12 @@ class CountersViewModel(
         }
     }
 
-     fun createCounter(title:String){
+     fun createCounter(title:String?){
          viewModelScope.launch {
              counterUseCases.createCounterUseCase(title).collect{
                  if(it.isSuccess){
                         Log.d("CounterCreated","Success")
+                     _events.value = Event(CounterNavigation.updateCounterList(it.getOrNull()))
                  }else{
                      Log.d("CounterCreated","errr ")
                  }
@@ -64,11 +65,12 @@ class CountersViewModel(
          }
     }
 
-    fun increaseCounter(id: String){
+    fun increaseCounter(id: String?){
         viewModelScope.launch {
             counterUseCases.increaseCounterUseCase(id).collect{
                 if(it.isSuccess){
                     Log.d("CounterCreated","Success")
+                    _events.value = Event(CounterNavigation.updateCounterList(it.getOrNull()))
                 }else{
                     Log.d("CounterCreated","errr ")
                 }
@@ -76,11 +78,12 @@ class CountersViewModel(
         }
     }
 
-    fun decreaseCounter(id: String){
+    fun decreaseCounter(id: String?){
         viewModelScope.launch {
             counterUseCases.decreaseCounterUseCase(id).collect{
                 if(it.isSuccess){
                     Log.d("CounterCreated","Success")
+                    _events.value = Event(CounterNavigation.updateCounterList(it.getOrNull()))
                 }else{
                     Log.d("CounterCreated","errr ")
                 }
@@ -90,13 +93,14 @@ class CountersViewModel(
 
     sealed class CounterEvent {
         object testEvent : CounterEvent()
-        data class CreateCounter(val title: String) : CounterEvent()
-        data class IncreaseCounter( val id: String ) : CounterEvent()
-        data class DecreaseCounter(val id: String) : CounterEvent()
+        data class CreateCounter(val title: String?) : CounterEvent()
+        data class IncreaseCounter( val id: String? ) : CounterEvent()
+        data class DecreaseCounter(val id: String?) : CounterEvent()
     }
 
     sealed class CounterNavigation(){
         data class setLoaderState(val state:Boolean):CounterNavigation()
         data class setCounterList(val listCounter:List<Counter>?):CounterNavigation()
+        data class updateCounterList(val listCounter:List<Counter>?):CounterNavigation()
     }
 }

@@ -16,16 +16,16 @@ interface CounterService{
     suspend fun getListCounter():List<Counter>
 
     @POST(ENDPOINT_COUNTER)
-    suspend fun createCounter(@Body title:JsonTitleServer):List<Counter>
+    suspend fun createCounter(@Body title:JsonTitleServer?):List<Counter>
 
     @POST(ENDPOINT_COUNTER_INC)
-    suspend fun increaseCounter(@Body id:JsonIdServer):List<Counter>
+    suspend fun increaseCounter(@Body id:JsonIdServer?):List<Counter>
 
     @POST(ENDPOINT_COUNTER_DEC)
-    suspend fun decreaseCounter(@Body id:JsonIdServer):List<Counter>
+    suspend fun decreaseCounter(@Body id:JsonIdServer?):List<Counter>
 
     @DELETE(ENDPOINT_COUNTER)
-    suspend fun deleteCounter(@Body id:JsonIdServer):List<Counter>
+    suspend fun deleteCounter(@Body id:JsonIdServer?):List<Counter>
 
 
 }

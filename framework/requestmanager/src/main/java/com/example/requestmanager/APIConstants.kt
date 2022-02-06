@@ -6,8 +6,8 @@ object APIConstants {
 
     const val ENDPOINT_COUNTERS ="counters"
     const val ENDPOINT_COUNTER ="counter"
-    const val ENDPOINT_COUNTER_INC ="inc"
-    const val ENDPOINT_COUNTER_DEC ="dec"
+    const val ENDPOINT_COUNTER_INC ="$ENDPOINT_COUNTER/inc"
+    const val ENDPOINT_COUNTER_DEC ="$ENDPOINT_COUNTER/dec"
 
 
     const val TITLE="title"

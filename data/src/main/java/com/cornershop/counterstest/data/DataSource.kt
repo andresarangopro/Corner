@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface RemoteCounterDataSource{
    suspend fun getListCounters():Flow<Result<List<Counter>>>
-   suspend fun createCounter(title:String):Flow<Result<List<Counter>>>
-   suspend fun increaseCounter(id:String):Flow<Result<List<Counter>>>
-   suspend fun decreaseCounter(id:String):Flow<Result<List<Counter>>>
-   suspend fun deleteCounter(id:String):Flow<Result<List<Counter>>>
+   suspend fun createCounter(title:String?):Flow<Result<List<Counter>>>
+   suspend fun increaseCounter(id:String?):Flow<Result<List<Counter>>>
+   suspend fun decreaseCounter(id:String?):Flow<Result<List<Counter>>>
+   suspend fun deleteCounter(id:String?):Flow<Result<List<Counter>>>
 }
