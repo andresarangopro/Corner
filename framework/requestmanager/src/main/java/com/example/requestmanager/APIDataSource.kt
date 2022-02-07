@@ -1,5 +1,6 @@
 package com.example.requestmanager
 
+import android.util.Log
 import com.cornershop.counterstest.data.RemoteCounterDataSource
 import com.cornershop.counterstest.entities.Counter
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +24,7 @@ class CounterDataSource @Inject constructor(private val api:CounterService): Rem
         return flow{
             emit(Result.success(api.createCounter(title?.toTitleJson())))
         }.catch {
+            Log.d("err","${it.message}")
             emit(Result.failure(RuntimeException("Something went wrong")))
         }
     }

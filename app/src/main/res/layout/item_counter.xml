@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/item_counter"
+
     android:padding="@dimen/margin_normal_1">
 
 
@@ -51,6 +53,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_plus" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/gpCounterHandler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="ivInc,ivDec,tvCount"/>
+
     <TextView
         android:id="@+id/tvCount"
         android:layout_width="wrap_content"
@@ -62,5 +71,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivDec"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.841"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.529"
+        app:srcCompat="@drawable/ic_check" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

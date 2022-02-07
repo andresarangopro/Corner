@@ -1,10 +1,12 @@
 package com.cornershop.counterstest.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.adapter.CounterRecyclerViewAdapter
+import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
 import com.cornershop.counterstest.presentation.utils.onQueryTextChanged
 import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import com.cornershop.counterstest.presentation.viewModels.Event
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_counters.view.*
+import kotlinx.android.synthetic.main.layout_welcome_content.view.*
 import javax.inject.Inject
 
 
@@ -63,13 +67,20 @@ class CountersFragment : Fragment() {
         }
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchView.onQueryTextChanged {
 
-        }
+        binding.searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(str: String?): Boolean {
+                viewModel.postEvent(CountersViewModel.CounterEvent.FilterCounter(str))
+                return false
+            }
+
+        })
 
         binding.btnAddCounter.setOnClickListener {
             val action= CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment()
@@ -96,11 +107,11 @@ class CountersFragment : Fragment() {
 
     private fun setupList(
         view: View?,
-        playlists: List<Counter>?
+        playlists: List<CounterListAdapter>?
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
-            counterAdapter = CounterRecyclerViewAdapter(playlists,{id->},
+            counterAdapter = CounterRecyclerViewAdapter(playlists,
                 {id->
                     viewModel.postEvent(CountersViewModel.CounterEvent.IncreaseCounter(id))},
                 { id->

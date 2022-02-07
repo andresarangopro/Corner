@@ -1,6 +1,7 @@
 package com.cornershop.counterstest.presentation.adapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.ItemCounterBinding
 import com.cornershop.counterstest.entities.Counter
+import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
+import okhttp3.internal.filterList
 import kotlin.properties.Delegates
 
 class CounterRecyclerViewAdapter(
-    private var values: List<Counter>?,
-    private val listener:(String?)->Unit,
+    private var values: List<CounterListAdapter>?,
     private val listenerInc:(String?)->Unit,
-    private val listenerDec:(String?)->Unit,
+    private val listenerDec:(String?)->Unit
 ) : RecyclerView.Adapter<CounterRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +30,7 @@ class CounterRecyclerViewAdapter(
         return ViewHolder(binding)
     }
 
-    fun updateData(newData: List<Counter>?) {
+    fun updateData(newData: List<CounterListAdapter>?) {
         values  = newData
         notifyDataSetChanged()
     }
@@ -45,7 +47,7 @@ class CounterRecyclerViewAdapter(
             holder.count.setTextColor(holder.grayColor)
 
         holder.root.setOnClickListener{
-                listener(item?.id)
+                //listener(item?.id)
         }
 
         holder.increase.setOnClickListener {
@@ -58,7 +60,7 @@ class CounterRecyclerViewAdapter(
         }
     }
 
-    private fun isBiggerThanZero(item: Counter?) =
+    private fun isBiggerThanZero(item: CounterListAdapter?) =
         item?.count!! > 0
 
     override fun getItemCount(): Int = values?.size?:0
