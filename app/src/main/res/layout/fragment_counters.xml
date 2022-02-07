@@ -22,6 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:imeOptions="actionDone|flagNoExtractUi"
             android:queryBackground="@color/transparent"
             android:queryHint="@string/search_counters"
@@ -33,6 +35,8 @@
             android:id="@+id/clSelected"
             android:layout_width="match_parent"
             android:visibility="gone"
+            tools:visibility="gone"
+            android:padding="@dimen/margin_normal_1"
             android:layout_height="match_parent">
 
             <ImageView
@@ -45,11 +49,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvSelectedItems"
                 style="@style/Theme.GrayLargeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal_1"
+                android:layout_marginStart="@dimen/margin_normal_3"
                 android:text="@string/n_selected"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivCancel"
@@ -60,10 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="41dp" />
+                app:layout_constraintGuide_percent="0.04" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ivDeleteCounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_delete"
@@ -126,7 +130,7 @@
         app:layout_constraintGuide_percent="0.05109489" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvItems"
         style="@style/Theme.NormalBoldTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,14 +139,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline13" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvTimes"
         style="@style/Theme.GrayMediumTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal_1"
         android:text="@string/n_times"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
+        app:layout_constraintStart_toEndOf="@+id/tvItems" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddCounter"

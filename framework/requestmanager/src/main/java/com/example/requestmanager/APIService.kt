@@ -4,11 +4,9 @@ import com.cornershop.counterstest.entities.Counter
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTERS
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER_DEC
+import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER_DELETE
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER_INC
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface CounterService{
 
@@ -24,7 +22,7 @@ interface CounterService{
     @POST(ENDPOINT_COUNTER_DEC)
     suspend fun decreaseCounter(@Body id:JsonIdServer?):List<Counter>
 
-    @DELETE(ENDPOINT_COUNTER)
+    @HTTP(method = "DELETE", path = ENDPOINT_COUNTER, hasBody = true)
     suspend fun deleteCounter(@Body id:JsonIdServer?):List<Counter>
 
 

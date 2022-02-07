@@ -1,12 +1,16 @@
 package com.cornershop.counterstest.presentation.adapter
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +22,14 @@ import okhttp3.internal.filterList
 import kotlin.properties.Delegates
 
 class CounterRecyclerViewAdapter(
+    private var context: Context,
     private var values: List<CounterListAdapter>?,
     private val listenerInc:(String?)->Unit,
-    private val listenerDec:(String?)->Unit
+    private val listenerDec:(String?)->Unit,
+    private val listenerSelect:(List<CounterListAdapter>?)->Unit
 ) : RecyclerView.Adapter<CounterRecyclerViewAdapter.ViewHolder>() {
+
+    var tempSelectedCounterList= ArrayList<CounterListAdapter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
          var binding = ItemCounterBinding.inflate(LayoutInflater.from(parent.context),
@@ -32,6 +40,15 @@ class CounterRecyclerViewAdapter(
 
     fun updateData(newData: List<CounterListAdapter>?) {
         values  = newData
+        tempSelectedCounterList = ArrayList<CounterListAdapter>()
+        notifyDataSetChanged()
+    }
+
+    fun unselectAllCounters(){
+        tempSelectedCounterList = ArrayList<CounterListAdapter>()
+        values?.forEach {
+            it.selected = false
+        }
         notifyDataSetChanged()
     }
 
@@ -46,8 +63,27 @@ class CounterRecyclerViewAdapter(
         else
             holder.count.setTextColor(holder.grayColor)
 
-        holder.root.setOnClickListener{
-                //listener(item?.id)
+        if(item?.selected == true) {
+            holder.itemCounter.background = holder.transparentOrange
+            holder.gpCounterHandler.visibility = View.GONE
+            holder.ivCheck.visibility = View.VISIBLE
+
+        } else {
+            holder.itemCounter.setBackgroundColor(Color.TRANSPARENT)
+            holder.gpCounterHandler.visibility = View.VISIBLE
+            holder.ivCheck.visibility = View.GONE
+        }
+
+        holder.title.setOnClickListener{
+                if(item?.selected == true) {
+                    item?.selected = false
+                    tempSelectedCounterList.remove(item)
+                }else {
+                    item?.selected = true
+                    tempSelectedCounterList.add(item!!)
+                }
+            notifyDataSetChanged()
+            listenerSelect(tempSelectedCounterList)
         }
 
         holder.increase.setOnClickListener {
@@ -70,7 +106,10 @@ class CounterRecyclerViewAdapter(
         val count: TextView = view.tvCount
         val increase: ImageView = view.ivInc
         val decrease: ImageView = view.ivDec
-        val blackColor: Int = R.color.orange
+        val itemCounter = view.clItemCounter
+        val gpCounterHandler:Group = view.gpCounterHandler
+        val ivCheck:ImageView = view.ivCheck
+        val transparentOrange: Drawable = ContextCompat.getDrawable(context,R.drawable.background_counter_selected)!!
         val grayColor: Int = R.color.gray
 
         val root: View =  view.root

@@ -6,6 +6,7 @@ object APIConstants {
 
     const val ENDPOINT_COUNTERS ="counters"
     const val ENDPOINT_COUNTER ="counter"
+    const val ENDPOINT_COUNTER_DELETE ="counter/{id}"
     const val ENDPOINT_COUNTER_INC ="$ENDPOINT_COUNTER/inc"
     const val ENDPOINT_COUNTER_DEC ="$ENDPOINT_COUNTER/dec"
 

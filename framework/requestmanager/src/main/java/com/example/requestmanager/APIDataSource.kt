@@ -49,6 +49,7 @@ class CounterDataSource @Inject constructor(private val api:CounterService): Rem
         return flow{
             emit(Result.success(api.deleteCounter(id?.toIdJson())))
         }.catch {
+            Log.d("CounterCDeletes","${it.message}")
             emit(Result.failure(RuntimeException("Something went wrong")))
         }
     }

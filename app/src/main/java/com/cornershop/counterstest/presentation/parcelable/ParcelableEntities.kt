@@ -4,5 +4,6 @@ data class CounterListAdapter(
     val id:String,
     val title:String,
     val count:Int,
-    val selected:Boolean
+    var selected:Boolean
 )
+
