@@ -54,11 +54,12 @@
         android:id="@+id/etLayoutCounter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline12">
+        app:layout_constraintTop_toTopOf="@+id/guideline12"
+        app:expandedHintEnabled="false"
+        android:hint="@string/counter_name_label">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCounter"
@@ -75,9 +76,26 @@
         android:layout_height="wrap_content"
         android:text="@string/save"
         style="@style/Theme.OrangeMediumTextView"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loaderSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        app:indicatorSize="@dimen/circular_progress_size"
+        android:visibility="gone"
+        app:indicatorColor="@color/orange"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"

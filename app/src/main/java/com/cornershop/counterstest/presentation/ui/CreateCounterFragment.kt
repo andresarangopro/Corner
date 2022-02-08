@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCreateCounterBinding
 import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import androidx.lifecycle.Observer
+import com.cornershop.counterstest.presentation.viewModels.utils.Event
+
 
 @AndroidEntryPoint
 class CreateCounterFragment : Fragment() {
@@ -26,7 +28,6 @@ class CreateCounterFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: CounterViewModelFactory
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -38,6 +39,7 @@ class CreateCounterFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentCreateCounterBinding.inflate(inflater, container, false)
         setupViewModel()
+        viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding?.root
     }
 
@@ -54,6 +56,29 @@ class CreateCounterFragment : Fragment() {
                 )
             )
         }
+    }
+
+    private fun validateEvents(event: Event<CountersViewModel.CounterNavigation>?) {
+        event?.getContentIfNotHandled()?.let { navigation ->
+           when(navigation){
+               is CountersViewModel.CounterNavigation.showLoaderSave->{
+                   handlerLoaderSave(View.GONE,View.VISIBLE)
+               }
+               is CountersViewModel.CounterNavigation.hideLoaderSave->{
+                   handlerLoaderSave(View.VISIBLE,View.GONE)
+                   cleanInputs()
+               }
+           }
+        }
+    }
+
+    private fun handlerLoaderSave(visibilityText:Int,visibilityLoader:Int){
+        binding?.tvSave?.visibility = visibilityText
+        binding?.loaderSave?.visibility = visibilityLoader
+    }
+
+    fun cleanInputs(){
+        binding?.etCounter?.setText("")
     }
 
     private fun setupViewModel() {

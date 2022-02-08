@@ -7,25 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
-import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.adapter.CounterRecyclerViewAdapter
 import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
-import com.cornershop.counterstest.presentation.utils.onQueryTextChanged
 import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
-import com.cornershop.counterstest.presentation.viewModels.Event
+import com.cornershop.counterstest.presentation.viewModels.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_counters.view.*
-import kotlinx.android.synthetic.main.layout_welcome_content.view.*
+import kotlinx.android.synthetic.main.items_times_view.view.*
 import javax.inject.Inject
 
 
@@ -80,14 +75,43 @@ class CountersFragment : Fragment() {
                 is CountersViewModel.CounterNavigation.hideSelectedItemState->{
                     setVisibilityTopSetup(View.GONE,View.VISIBLE)
                 }
+
+                is CountersViewModel.CounterNavigation.hideSwipeLoaderSave->{
+                    binding.srwCounterList.isRefreshing = false
+                }
+
+                is CountersViewModel.CounterNavigation.onErrorLoadingCounterList-> navigation.run{
+                    binding.errMessage.title = title?.let { resources.getString(it) }
+                    binding.errMessage.message = message?.let { resources.getString(it) }
+                    binding.errMessage.setView()
+                }
+                is CountersViewModel.CounterNavigation.onErrorLoadingCounterListNetork-> navigation.run{
+                    binding.errMessage.title = title?.let { resources.getString(it) }
+                    binding.errMessage.message = message?.let { resources.getString(it) }
+                    binding.errMessage.setActionRetry {
+                        viewModel.postEvent(CountersViewModel.CounterEvent.getListCounterInit)
+                        binding.errMessage.hideAll()
+                    }
+                    binding.errMessage.setView()
+                }
             }
         }
     }
 
     private fun setTimesAndItems(items:Int?,times:Int?) {
-        binding.tvItems.text = resources.getString(R.string.n_items, items)
-        binding.tvTimes.text = resources.getString(R.string.n_times, times)
+        if (items != null) {
+            if(items >= 0) {
+                binding.viewTimesItems.visibility = View.VISIBLE
+                binding.viewTimesItems.tvItems.text = resources.getString(R.string.n_items, items)
+                binding.viewTimesItems.tvTimes.text = resources.getString(R.string.n_times, times)
+            }else{
+                binding.viewTimesItems.visibility = View.GONE
+            }
+        }
+
     }
+
+
 
     private fun setVisibilityTopSetup(clSelectVisibility:Int, searchViewVisibility: Int) {
         binding.clSelected.visibility = clSelectVisibility
@@ -123,6 +147,9 @@ class CountersFragment : Fragment() {
             counterAdapter.unselectAllCounters()
         }
 
+        binding.srwCounterList.setOnRefreshListener {
+            viewModel.postEvent(CountersViewModel.CounterEvent.getListCounterFromSwipe)
+        }
 
     }
 

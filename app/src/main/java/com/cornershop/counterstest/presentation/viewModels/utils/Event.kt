@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.presentation.viewModels
+package com.cornershop.counterstest.presentation.viewModels.utils
 
 data class Event<out T>(private val content:T) {
 
