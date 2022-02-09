@@ -1,19 +1,23 @@
 package com.cornershop.counterstest.presentation.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.presentation.adapter.CounterRecyclerViewAdapter
+import com.cornershop.counterstest.presentation.dialogs.MessageDialog
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
@@ -137,11 +141,21 @@ class CountersFragment : Fragment() {
 
         binding.btnAddCounter.setOnClickListener {
             val action= CountersFragmentDirections.actionCountersFragmentToCreateCounterFragment()
-            findNavController().navigate(action)
+            val navOptions = NavOptions.Builder().setPopUpTo(R.id.countersFragment, true).build()
+            findNavController().navigate(action, navOptions)
         }
 
         binding.ivDeleteCounter.setOnClickListener {
-            viewModel.postEvent(CountersViewModel.CounterEvent.DeleteSelectedCounters)
+            var dialog = MessageDialog.Builder()
+                .setMessage(getString(R.string.delete_x_question,viewModel.listSelectedCounterAdapter.value))
+                .setPositiveButton(getString(R.string.delete),DialogInterface.OnClickListener { dialogInterface, i ->
+                    viewModel.postEvent(CountersViewModel.CounterEvent.DeleteSelectedCounters)
+                })
+                .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                }).dialog(AlertDialog.Builder(requireContext())).build()
+
+            dialog.show(getChildFragmentManager(),"")
         }
 
         binding.ivCancel.setOnClickListener {
