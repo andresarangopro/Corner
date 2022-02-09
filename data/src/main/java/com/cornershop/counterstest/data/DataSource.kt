@@ -8,11 +8,19 @@ import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.flow.Flow
 
+interface CommonCounterDataSource{
 
-interface RemoteCounterDataSource{
    suspend fun getListCounters():Flow<Result<List<Counter>>>
-   suspend fun createCounter(title:String?):Flow<Result<List<Counter>>>
    suspend fun increaseCounter(id:String?):Flow<Result<List<Counter>>>
    suspend fun decreaseCounter(id:String?):Flow<Result<List<Counter>>>
+}
+
+interface RemoteCounterDataSource:CommonCounterDataSource{
+   suspend fun createCounter(title:String?):Flow<Result<List<Counter>>>
    suspend fun deleteCounter(id:String?):Flow<Result<List<Counter>>>
+}
+
+interface LocalCounterDataSource:CommonCounterDataSource{
+   suspend fun createCounter(counter:Counter?):Flow<Result<Boolean>>
+   suspend fun deleteCounter(counter:Counter?):Flow<Result<Boolean>>
 }
