@@ -17,17 +17,17 @@ abstract class CounterDatabase:RoomDatabase() {
 
     //region Companion Object
 
-    companion object {
-
-        private const val DATABASE_NAME = "counter_db"
-
-        @Synchronized
-        fun getDatabase(context: Context): CounterDatabase = Room.databaseBuilder(
-            context.applicationContext,
-            CounterDatabase::class.java,
-            DATABASE_NAME
-        ).build()
-    }
+//    companion object {
+//
+//        private const val DATABASE_NAME = "counter_db"
+//
+//        @Synchronized
+//        fun getDatabase(context: Context): CounterDatabase = Room.databaseBuilder(
+//            context.applicationContext,
+//            CounterDatabase::class.java,
+//            DATABASE_NAME
+//        ).build()
+//    }
 
     //endregion
 }

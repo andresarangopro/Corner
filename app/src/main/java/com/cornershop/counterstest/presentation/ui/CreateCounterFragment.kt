@@ -5,13 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cornershop.counterstest.databinding.FragmentCreateCounterBinding
-import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.cornershop.counterstest.R
@@ -25,10 +23,7 @@ class CreateCounterFragment : Fragment() {
     private val binding get() = _binding
 
 
-    lateinit var viewModel: CountersViewModel
-
-    @Inject
-    lateinit var viewModelFactory: CounterViewModelFactory
+    private val viewModel:CountersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +35,6 @@ class CreateCounterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentCreateCounterBinding.inflate(inflater, container, false)
-        setupViewModel()
         viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding?.root
     }
@@ -83,11 +77,6 @@ class CreateCounterFragment : Fragment() {
     fun cleanInputs(){
         binding?.etCounter?.setText("")
     }
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CountersViewModel::class.java)
-    }
-
 
     companion object {
         @JvmStatic

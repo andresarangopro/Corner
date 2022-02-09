@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -35,10 +36,8 @@ class CountersFragment : Fragment() {
 
     lateinit var counterAdapter:CounterRecyclerViewAdapter
 
-    lateinit var viewModel: CountersViewModel
+    private val viewModel:CountersViewModel by viewModels()
 
-    @Inject
-    lateinit var viewModelFactory: CounterViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,14 +173,10 @@ class CountersFragment : Fragment() {
     ): View? {
         _binding = FragmentCountersBinding.inflate(inflater,container,false)
         binding.loader.visibility = View.GONE
-        setupViewModel()
         viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding.root
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CountersViewModel::class.java)
-    }
 
     private fun setupList(
         view: View?,

@@ -6,11 +6,15 @@ import javax.inject.Inject
 
 
 class CounterRespository @Inject constructor(
-    private val remoteCounterDataSource: RemoteCounterDataSource
+    private val remoteCounterDataSource: RemoteCounterDataSource,
+    private val localCounterDataSource: LocalCounterDataSource
 ){
     suspend fun getListCounter() = remoteCounterDataSource.getListCounters()
     suspend fun createCounter(title: String?) = remoteCounterDataSource.createCounter(title)
     suspend fun increaseCounter(id:String?) = remoteCounterDataSource.increaseCounter(id)
     suspend fun decreaseCounter(id:String?) = remoteCounterDataSource.decreaseCounter(id)
     suspend fun deleteCounter(id:String?) = remoteCounterDataSource.deleteCounter(id)
+
+    suspend fun getLocalListCounter() = localCounterDataSource.getListCounters()
+
 }

@@ -9,15 +9,8 @@ import java.lang.RuntimeException
 import javax.inject.Inject
 
 class DatabaseDataSource @Inject constructor(
-    database:CounterDatabase
+    private val counterDao:CounterDao
 ):LocalCounterDataSource {
-
-    //region Fields
-
-    private val counterDao by lazy { database.counterDao() }
-    //endregion
-
-    //region
 
     override suspend fun getListCounters(): Flow<Result<List<Counter>>> {
         return flow {

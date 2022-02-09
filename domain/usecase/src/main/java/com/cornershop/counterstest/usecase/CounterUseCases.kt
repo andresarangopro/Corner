@@ -12,4 +12,7 @@ class CounterUseCases @Inject constructor(private val counterRespository: Counte
     suspend fun increaseCounterUseCase(id:String?): Flow<Result<List<Counter>>> = counterRespository.increaseCounter(id)
     suspend fun decreaseCounterUseCase(id:String?): Flow<Result<List<Counter>>> = counterRespository.decreaseCounter(id)
     suspend fun deleteCounterUseCase(id:String): Flow<Result<List<Counter>>> = counterRespository.deleteCounter(id)
+
+
+    suspend fun getLocalListCounterUseCase(): Flow<Result<List<Counter>>> = counterRespository.getLocalListCounter()
 }

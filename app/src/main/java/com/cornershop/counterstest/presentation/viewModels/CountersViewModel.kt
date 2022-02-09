@@ -9,16 +9,18 @@ import com.cornershop.counterstest.R
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
-import com.cornershop.counterstest.presentation.utils.BaseViewModel
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
 import com.cornershop.counterstest.usecase.CounterUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import okhttp3.internal.filterList
+import javax.inject.Inject
 
-class CountersViewModel(
+@HiltViewModel
+class CountersViewModel @Inject constructor(
     private val counterUseCases: CounterUseCases
-): BaseViewModel<CountersViewModel.CounterEvent, CountersViewModel.CounterNavigation>() {
+):ViewModel() {
 
     private val _events = MutableLiveData<Event<CounterNavigation>>()
     val events:LiveData<Event<CounterNavigation>> get() = _events
@@ -83,7 +85,7 @@ class CountersViewModel(
     }
 
 
-    override fun manageEvent(event: CounterEvent) {
+    fun manageEvent(event: CounterEvent) {
         when(event){
 
             is CounterEvent.CreateCounter->{
@@ -162,6 +164,10 @@ class CountersViewModel(
         }
     }
 
+    fun postEvent(event: CounterEvent) {
+        manageEvent(event)
+    }
+
     fun decreaseCounter(id: String?){
         viewModelScope.launch {
             counterUseCases.decreaseCounterUseCase(id).collect{
@@ -203,29 +209,4 @@ class CountersViewModel(
         _listCounterAdapter.value = listCounter?.toListCounterAdapter()
     }
 
-    sealed class CounterEvent {
-        data class CreateCounter(val title: String?) : CounterEvent()
-        data class FilterCounter(val counterName: String?) : CounterEvent()
-        data class IncreaseCounter( val id: String? ) : CounterEvent()
-        data class DecreaseCounter(val id: String?) : CounterEvent()
-        object DeleteSelectedCounters : CounterEvent()
-        object getListCounterInit : CounterEvent()
-        object getListCounterFromSwipe : CounterEvent()
-        data class SelectCounters(val listCounter: List<CounterAdapter>?) : CounterEvent()
-    }
-
-    sealed class CounterNavigation(){
-        object hideSelectedItemState:CounterNavigation()
-        object showLoaderSave:CounterNavigation()
-        object hideLoaderSave:CounterNavigation()
-        object hideSwipeLoaderSave:CounterNavigation()
-        object isSwipeLoaderSave:CounterNavigation()
-        data class onErrorLoadingCounterListNetork(val title: Int?, val message:Int?):CounterNavigation()
-        data class onErrorLoadingCounterList(val title: Int?, val message:Int?):CounterNavigation()
-        data class onNoResultCounterList(val message: Int?):CounterNavigation()
-        data class setLoaderState(val state:Boolean):CounterNavigation()
-        data class setSelectedItemState(val items:Int?):CounterNavigation()
-        data class setCounterList(val listCounter:List<CounterAdapter>?, val timesSum:Int?):CounterNavigation()
-        data class updateCounterList(val listCounter:List<CounterAdapter>?, val timesSum:Int?):CounterNavigation()
-    }
 }
