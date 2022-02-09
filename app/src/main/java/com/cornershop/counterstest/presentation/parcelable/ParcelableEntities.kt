@@ -1,6 +1,6 @@
 package com.cornershop.counterstest.presentation.parcelable
 
-data class CounterListAdapter(
+data class CounterAdapter(
     val id:String,
     val title:String,
     val count:Int,

@@ -1,7 +1,6 @@
 package com.cornershop.counterstest.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.presentation.adapter.CounterRecyclerViewAdapter
-import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
+import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.viewModels.CounterViewModelFactory
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
@@ -81,9 +80,7 @@ class CountersFragment : Fragment() {
                 }
 
                 is CountersViewModel.CounterNavigation.onErrorLoadingCounterList-> navigation.run{
-                    binding.errMessage.title = title?.let { resources.getString(it) }
-                    binding.errMessage.message = message?.let { resources.getString(it) }
-                    binding.errMessage.setView()
+                    showErrorNotCountersYet(title,message)
                 }
                 is CountersViewModel.CounterNavigation.onErrorLoadingCounterListNetork-> navigation.run{
                     binding.errMessage.title = title?.let { resources.getString(it) }
@@ -98,25 +95,30 @@ class CountersFragment : Fragment() {
         }
     }
 
+    private fun showErrorNotCountersYet(title:Int?, message:Int?) {
+        binding.errMessage.title = title?.let { resources.getString(it) }
+        binding.errMessage.message = message?.let { resources.getString(it) }
+        binding.errMessage.setView()
+    }
+
     private fun setTimesAndItems(items:Int?,times:Int?) {
         if (items != null) {
-            if(items >= 0) {
+            if(items > 0) {
                 binding.viewTimesItems.visibility = View.VISIBLE
                 binding.viewTimesItems.tvItems.text = resources.getString(R.string.n_items, items)
                 binding.viewTimesItems.tvTimes.text = resources.getString(R.string.n_times, times)
             }else{
                 binding.viewTimesItems.visibility = View.GONE
+                showErrorNotCountersYet(R.string.no_counters, R.string.no_counters_phrase)
             }
         }
-
     }
-
-
 
     private fun setVisibilityTopSetup(clSelectVisibility:Int, searchViewVisibility: Int) {
         binding.clSelected.visibility = clSelectVisibility
         binding.searchView.visibility = searchViewVisibility
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -150,7 +152,6 @@ class CountersFragment : Fragment() {
         binding.srwCounterList.setOnRefreshListener {
             viewModel.postEvent(CountersViewModel.CounterEvent.getListCounterFromSwipe)
         }
-
     }
 
     override fun onCreateView(
@@ -158,7 +159,7 @@ class CountersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCountersBinding.inflate(inflater,container,false)
-
+        binding.loader.visibility = View.GONE
         setupViewModel()
         viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding.root
@@ -170,7 +171,7 @@ class CountersFragment : Fragment() {
 
     private fun setupList(
         view: View?,
-        playlists: List<CounterListAdapter>?
+        playlists: List<CounterAdapter>?
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)

@@ -6,9 +6,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.*
 import com.cornershop.counterstest.R
-import com.cornershop.counterstest.data.vo.Resource
 import com.cornershop.counterstest.entities.Counter
-import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
+import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
 import com.cornershop.counterstest.presentation.utils.BaseViewModel
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
@@ -27,18 +26,18 @@ class CountersViewModel(
     private val _currentCounterName = MutableLiveData<String>()
     val currentCounterName:LiveData<String> get()=_currentCounterName
 
-    private val _listCounterAdapter = MutableLiveData<List<CounterListAdapter>>()
-    private val listCounterAdapter:LiveData<List<CounterListAdapter>> get() = _listCounterAdapter
+    private val _listCounterAdapter = MutableLiveData<List<CounterAdapter>>()
+    val listCounterAdapter:LiveData<List<CounterAdapter>> get() = _listCounterAdapter
 
-    private val _listSelectedCounterAdapter = MutableLiveData<List<CounterListAdapter>>()
-    private val listSelectedCounterAdapter:LiveData<List<CounterListAdapter>> get() = _listSelectedCounterAdapter
+    private val _listSelectedCounterAdapter = MutableLiveData<List<CounterAdapter>>()
+    val listSelectedCounterAdapter:LiveData<List<CounterAdapter>> get() = _listSelectedCounterAdapter
 
     init{
         this.postEvent(CounterEvent.getListCounterInit)
     }
 
 
-    private fun getListCounter(eventStart:CounterNavigation,
+    fun getListCounter(eventStart:CounterNavigation,
                                eventResponse:CounterNavigation) {
         _events.value = Event(eventStart)
         viewModelScope.launch {
@@ -67,7 +66,7 @@ class CountersViewModel(
     }
 
 
-    fun List<CounterListAdapter>?.getTimesSum():Int? = this?.map { it.count }?.sum()
+    fun List<CounterAdapter>?.getTimesSum():Int? = this?.map { it.count }?.sum()
 
     fun filterCounterName(counterName:String?){
         if(counterName!!.isNotEmpty()){
@@ -141,7 +140,7 @@ class CountersViewModel(
          }
     }
 
-    fun selectedCounter(listCounterAdapter:List<CounterListAdapter>?){
+    fun selectedCounter(listCounterAdapter:List<CounterAdapter>?){
         if(listCounterAdapter?.size?:0 > 0) {
             _listSelectedCounterAdapter.value = listCounterAdapter!!
             _events.value = Event(CounterNavigation.setSelectedItemState(listCounterAdapter?.size))
@@ -212,7 +211,7 @@ class CountersViewModel(
         object DeleteSelectedCounters : CounterEvent()
         object getListCounterInit : CounterEvent()
         object getListCounterFromSwipe : CounterEvent()
-        data class SelectCounters(val listCounter: List<CounterListAdapter>?) : CounterEvent()
+        data class SelectCounters(val listCounter: List<CounterAdapter>?) : CounterEvent()
     }
 
     sealed class CounterNavigation(){
@@ -226,7 +225,7 @@ class CountersViewModel(
         data class onNoResultCounterList(val message: Int?):CounterNavigation()
         data class setLoaderState(val state:Boolean):CounterNavigation()
         data class setSelectedItemState(val items:Int?):CounterNavigation()
-        data class setCounterList(val listCounter:List<CounterListAdapter>?,val timesSum:Int?):CounterNavigation()
-        data class updateCounterList(val listCounter:List<CounterListAdapter>?,val timesSum:Int?):CounterNavigation()
+        data class setCounterList(val listCounter:List<CounterAdapter>?, val timesSum:Int?):CounterNavigation()
+        data class updateCounterList(val listCounter:List<CounterAdapter>?, val timesSum:Int?):CounterNavigation()
     }
 }

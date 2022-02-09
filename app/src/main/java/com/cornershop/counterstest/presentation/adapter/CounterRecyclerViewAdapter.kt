@@ -3,33 +3,27 @@ package com.cornershop.counterstest.presentation.adapter
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.ItemCounterBinding
-import com.cornershop.counterstest.entities.Counter
-import com.cornershop.counterstest.presentation.parcelable.CounterListAdapter
-import okhttp3.internal.filterList
-import kotlin.properties.Delegates
+import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 
 class CounterRecyclerViewAdapter(
     private var context: Context,
-    private var values: List<CounterListAdapter>?,
+    private var values: List<CounterAdapter>?,
     private val listenerInc:(String?)->Unit,
     private val listenerDec:(String?)->Unit,
-    private val listenerSelect:(List<CounterListAdapter>?)->Unit
+    private val listenerSelect:(List<CounterAdapter>?)->Unit
 ) : RecyclerView.Adapter<CounterRecyclerViewAdapter.ViewHolder>() {
 
-    var tempSelectedCounterList= ArrayList<CounterListAdapter>()
+    var tempSelectedCounterList= ArrayList<CounterAdapter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
          var binding = ItemCounterBinding.inflate(LayoutInflater.from(parent.context),
@@ -38,14 +32,14 @@ class CounterRecyclerViewAdapter(
         return ViewHolder(binding)
     }
 
-    fun updateData(newData: List<CounterListAdapter>?) {
+    fun updateData(newData: List<CounterAdapter>?) {
         values  = newData
-        tempSelectedCounterList = ArrayList<CounterListAdapter>()
+        tempSelectedCounterList = ArrayList<CounterAdapter>()
         notifyDataSetChanged()
     }
 
     fun unselectAllCounters(){
-        tempSelectedCounterList = ArrayList<CounterListAdapter>()
+        tempSelectedCounterList = ArrayList<CounterAdapter>()
         values?.forEach {
             it.selected = false
         }
@@ -96,7 +90,7 @@ class CounterRecyclerViewAdapter(
         }
     }
 
-    private fun isBiggerThanZero(item: CounterListAdapter?) =
+    private fun isBiggerThanZero(item: CounterAdapter?) =
         item?.count!! > 0
 
     override fun getItemCount(): Int = values?.size?:0

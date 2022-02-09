@@ -14,6 +14,7 @@
         android:theme="@style/Theme.CountersNormal"
         android:fullBackupContent="@xml/backup_descriptor"
         android:allowBackup="false"
+        android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
         android:usesCleartextTraffic="true"
         android:name=".presentation.CountersApplication"    >
         <activity

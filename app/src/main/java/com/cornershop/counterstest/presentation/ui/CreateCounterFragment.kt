@@ -13,6 +13,8 @@ import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
+import com.cornershop.counterstest.R
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
 
 
@@ -47,7 +49,8 @@ class CreateCounterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.ivCancel?.setOnClickListener{
             val action = CreateCounterFragmentDirections.actionCreateCounterFragmentToCountersFragment()
-            findNavController().navigate(action)
+            val navOptions = NavOptions.Builder().setPopUpTo(R.id.createCounterFragment, true).build()
+            findNavController().navigate(action, navOptions)
         }
 
         binding?.tvSave?.setOnClickListener {

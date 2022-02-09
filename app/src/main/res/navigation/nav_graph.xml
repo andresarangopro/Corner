@@ -12,7 +12,11 @@
         android:label="WelcomeFragment" >
         <action
             android:id="@+id/action_welcomeFragment_to_countersFragment"
-            app:destination="@id/countersFragment" />
+            app:destination="@id/countersFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/countersFragment"
@@ -21,7 +25,11 @@
         tools:layout="@layout/fragment_counters" >
         <action
             android:id="@+id/action_countersFragment_to_createCounterFragment"
-            app:destination="@id/createCounterFragment" />
+            app:destination="@id/createCounterFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/createCounterFragment"
@@ -30,6 +38,10 @@
         tools:layout="@layout/fragment_create_counter" >
         <action
             android:id="@+id/action_createCounterFragment_to_countersFragment"
-            app:destination="@id/countersFragment" />
+            app:destination="@id/countersFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 </navigation>
