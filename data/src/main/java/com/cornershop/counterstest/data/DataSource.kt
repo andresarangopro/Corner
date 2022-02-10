@@ -21,6 +21,7 @@ interface RemoteCounterDataSource:CommonCounterDataSource{
 
 interface LocalCounterDataSource:CommonCounterDataSource{
    suspend fun createCounter(counter:Counter?): Flow<Result<List<Counter>>>
+   suspend fun createCounterFromServer(counter:Counter): Flow<Result<List<Counter>>>
    suspend fun deleteCounter(counter:Counter?):Flow<Result<List<Counter>>>
    suspend fun increaseCounter(counter:Counter):Flow<Result<List<Counter>>>
    suspend fun decreaseCounter(counter:Counter):Flow<Result<List<Counter>>>

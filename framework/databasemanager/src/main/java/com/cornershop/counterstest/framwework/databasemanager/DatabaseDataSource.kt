@@ -35,6 +35,21 @@ class DatabaseDataSource @Inject constructor(
         }
     }
 
+    override suspend fun createCounterFromServer(counter: Counter):  Flow<Result<List<Counter>>>  {
+        return flow {
+            if(counter.id_remote != "0"){
+                if(counterDao.getCounterById(counter.id_remote) == null)
+                    if(counterDao.insertCounter(counter?.toCounterEntity()) == 1 )
+                        emit(Result.success(counterDao.getAllCounters().toCounterDomainList()))
+
+            }else{
+                emit(Result.failure(RuntimeException("Something went wrong")))
+            }
+        }.catch {
+            emit(Result.failure(RuntimeException("Something went wrong")))
+        }
+    }
+
     override suspend fun deleteCounter(counter: Counter?): Flow<Result<List<Counter>>> {
         val counterEntity = counter?.toCounterEntity()
         return flow {
