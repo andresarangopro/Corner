@@ -21,6 +21,6 @@ interface RemoteCounterDataSource:CommonCounterDataSource{
 }
 
 interface LocalCounterDataSource:CommonCounterDataSource{
-   suspend fun createCounter(counter:Counter?):Flow<Result<Boolean>>
-   suspend fun deleteCounter(counter:Counter?):Flow<Result<Boolean>>
+   suspend fun createCounter(counter:Counter?):Flow<Result<Unit>>
+   suspend fun deleteCounter(counter:Counter?):Flow<Result<Unit>>
 }

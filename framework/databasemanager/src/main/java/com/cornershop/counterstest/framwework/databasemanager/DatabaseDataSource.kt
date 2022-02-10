@@ -23,7 +23,7 @@ class DatabaseDataSource @Inject constructor(
         }
     }
 
-    override suspend fun createCounter(counter: Counter?): Flow<Result<Boolean>> {
+    override suspend fun createCounter(counter: Counter?): Flow<Result<Unit>> {
         val counterEntity = counter?.toCounterEntity()
         return flow {
                 emit(
@@ -32,7 +32,7 @@ class DatabaseDataSource @Inject constructor(
             }
     }
 
-    override suspend fun deleteCounter(counter: Counter?): Flow<Result<Boolean>> {
+    override suspend fun deleteCounter(counter: Counter?): Flow<Result<Unit>> {
         val counterEntity = counter?.toCounterEntity()
         return flow {
             emit(

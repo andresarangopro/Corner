@@ -39,8 +39,18 @@
     <style name="Theme.BoldTextView" parent="TextAppearance.AppCompat.Large">
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="AppTheme.LoginScreenTheme" parent="Theme.CountersNormal">
         <item name="colorOnSurface">@color/orange</item>
+    </style>
+
+    <style name="editTextTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/orange</item>
+    </style>
+
+    <style name="style_hint_orange_text_input_layout" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/orange</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
 </resources>

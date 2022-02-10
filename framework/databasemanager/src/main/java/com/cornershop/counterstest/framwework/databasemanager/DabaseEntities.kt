@@ -9,5 +9,5 @@ import androidx.room.PrimaryKey
 data class CounterEntity(
     @PrimaryKey @ColumnInfo(name = "counter_id") var id: String,
     @ColumnInfo(name = "counter_title") var title: String,
-    @ColumnInfo(name = "counter_count") var count: Int?
+    @ColumnInfo(name = "counter_count") var count: Int
 )

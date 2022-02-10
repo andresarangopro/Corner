@@ -16,5 +16,6 @@ class CounterRespository @Inject constructor(
     suspend fun deleteCounter(id:String?) = remoteCounterDataSource.deleteCounter(id)
 
     suspend fun getLocalListCounter() = localCounterDataSource.getListCounters()
+    suspend fun createLocalCounter(counter: Counter) = localCounterDataSource.createCounter(counter)
 
 }

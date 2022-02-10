@@ -1,6 +1,8 @@
 package com.cornershop.counterstest.presentation.utils
 
 import android.widget.SearchView
+import androidx.annotation.MainThread
+import androidx.lifecycle.MutableLiveData
 
 inline fun SearchView.onQueryTextChanged(crossinline onQueryTextChanged: (String) -> Unit) {
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -13,4 +15,14 @@ inline fun SearchView.onQueryTextChanged(crossinline onQueryTextChanged: (String
             return false
         }
     })
+}
+
+@MainThread
+fun <T> MutableLiveData<T>.mutate(mutator: T.() -> Unit) {
+    this.value = this.value?.apply(mutator)
+}
+
+@MainThread
+fun <T> MutableLiveData<T>.modifyValue(transform: T.() -> T) {
+    this.value = this.value?.run(transform)
 }

@@ -51,6 +51,7 @@ dependencies {
     implementation project(":domain:entities")
     implementation project(":data")
     implementation project(":framework:requestmanager")
+    implementation project(":framework:databasemanager")
 
     // build/runtime dependencies
     implementation jetbrainsKotlin

@@ -1,6 +1,8 @@
 package com.cornershop.counterstest.presentation.parcelable
 
- class CounterAdapter(
+import androidx.databinding.BaseObservable
+
+class CounterAdapter(
     val id:String,
     val title:String,
     val count:Int,
@@ -10,5 +12,6 @@ package com.cornershop.counterstest.presentation.parcelable
      override fun toString(): String {
          return title
      }
- }
+
+}
 

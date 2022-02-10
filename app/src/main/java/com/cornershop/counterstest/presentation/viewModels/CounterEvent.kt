@@ -11,6 +11,6 @@ sealed class CounterEvent {
     object DeleteSelectedCounters : CounterEvent()
     object getListCounterInit : CounterEvent()
     object getListCounterFromSwipe : CounterEvent()
-    data class SelectCounters(val listCounter: List<CounterAdapter>?) : CounterEvent()
+    data class SelectCounters(val counter: CounterAdapter) : CounterEvent()
 }
 

@@ -13,8 +13,8 @@ interface CounterDao {
     suspend fun getCounterById(id: String): CounterEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCounter(counterEntity: CounterEntity?):Boolean
+    suspend fun insertCounter(counterEntity: CounterEntity?)
 
     @Delete
-    suspend fun deleteCounter(counterEntity: CounterEntity?):Boolean
+    suspend fun deleteCounter(counterEntity: CounterEntity?)
 }

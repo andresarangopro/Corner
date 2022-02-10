@@ -9,6 +9,9 @@ import com.cornershop.counterstest.R
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
+import com.cornershop.counterstest.presentation.parcelable.toListCounterDomain
+import com.cornershop.counterstest.presentation.utils.modifyValue
+import com.cornershop.counterstest.presentation.utils.mutate
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
 import com.cornershop.counterstest.usecase.CounterUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +56,7 @@ class CountersViewModel @Inject constructor(
                                 listCounterAdapter?.value?.getTimesSum()
                             )
                         )
+                        insertInDatabaseCounter()
                     }else{
                         _events.value = Event(CounterNavigation.onErrorLoadingCounterList(R.string.no_counters, R.string.no_counters_phrase))
                     }
@@ -63,7 +67,7 @@ class CountersViewModel @Inject constructor(
                         .string.connection_error_description))
                     _events.value = Event(eventResponse)
                 }
-        }
+          }
         }
     }
 
@@ -105,7 +109,7 @@ class CountersViewModel @Inject constructor(
             }
 
             is CounterEvent.SelectCounters->{
-                selectedCounter(event.listCounter)
+                selectedCounter(event.counter)
             }
 
             is CounterEvent.DeleteSelectedCounters->{
@@ -142,12 +146,12 @@ class CountersViewModel @Inject constructor(
          }
     }
 
-    fun selectedCounter(listCounterAdapter:List<CounterAdapter>?){
-        if(listCounterAdapter?.size?:0 > 0) {
-            _listSelectedCounterAdapter.value = listCounterAdapter!!
-            _events.value = Event(CounterNavigation.setSelectedItemState(listCounterAdapter?.size))
-        }else
-            _events.value = Event(CounterNavigation.hideSelectedItemState)
+    fun selectedCounter(counterAdapter:CounterAdapter){
+        var index = _listCounterAdapter.value?.indexOfFirst { it.id == counterAdapter.id }
+        Log.d("index","$index")
+        _listCounterAdapter.mutate { _listCounterAdapter.value?.get(0)?.selected = true }
+        //_listCounterAdapter.modifyValue { copy(_listCounterAdapter.value?.get(0)?.selected = false) }
+        //_listCounterAdapter.value?.get(0) = _listCounterAdapter.value?.get(1)
     }
 
     fun increaseCounter(id: String?){
@@ -166,6 +170,21 @@ class CountersViewModel @Inject constructor(
 
     fun postEvent(event: CounterEvent) {
         manageEvent(event)
+    }
+
+    fun insertInDatabaseCounter(){
+        viewModelScope.launch {
+            _listCounterAdapter.value?.toListCounterDomain()?.forEach {
+                counterUseCases.createLocalCounterUseCase(it).collect{
+                    if(it.isSuccess){
+                        Log.d("CounterCreated","success")
+                    }else{
+                        Log.d("CounterCreated","errr ${it.exceptionOrNull()}")
+                    }
+                }
+            }
+
+        }
     }
 
     fun decreaseCounter(id: String?){

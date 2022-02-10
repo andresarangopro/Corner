@@ -13,6 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.cornershop.counterstest.R
+import com.cornershop.counterstest.presentation.viewModels.CounterEvent
+import com.cornershop.counterstest.presentation.viewModels.CounterNavigation
 import com.cornershop.counterstest.presentation.viewModels.utils.Event
 
 
@@ -48,20 +50,21 @@ class CreateCounterFragment : Fragment() {
         }
 
         binding?.tvSave?.setOnClickListener {
-            viewModel.postEvent(CountersViewModel.CounterEvent.CreateCounter(
+            viewModel.postEvent(
+                CounterEvent.CreateCounter(
                    binding?.etCounter?.text.toString()
                 )
             )
         }
     }
 
-    private fun validateEvents(event: Event<CountersViewModel.CounterNavigation>?) {
+    private fun validateEvents(event: Event<CounterNavigation>?) {
         event?.getContentIfNotHandled()?.let { navigation ->
            when(navigation){
-               is CountersViewModel.CounterNavigation.showLoaderSave->{
+               is CounterNavigation.showLoaderSave->{
                    handlerLoaderSave(View.GONE,View.VISIBLE)
                }
-               is CountersViewModel.CounterNavigation.hideLoaderSave->{
+               is CounterNavigation.hideLoaderSave->{
                    handlerLoaderSave(View.VISIBLE,View.GONE)
                    cleanInputs()
                }

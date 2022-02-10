@@ -16,7 +16,6 @@ import com.cornershop.counterstest.databinding.ItemCounterBinding
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 
 class CounterRecyclerViewAdapter(
-    private var context: Context,
     private var values: List<CounterAdapter>?,
     private val listenerInc:(String?)->Unit,
     private val listenerDec:(String?)->Unit,
@@ -103,10 +102,9 @@ class CounterRecyclerViewAdapter(
         val itemCounter = view.clItemCounter
         val gpCounterHandler:Group = view.gpCounterHandler
         val ivCheck:ImageView = view.ivCheck
-        val transparentOrange: Drawable = ContextCompat.getDrawable(context,R.drawable.background_counter_selected)!!
-        val grayColor: Int = R.color.gray
+        val grayColor:Int = ContextCompat.getColor(view.root.context,R.color.gray)
+        val transparentOrange: Drawable? = ContextCompat.getDrawable(view.root.context,R.drawable.background_counter_selected)
 
-        val root: View =  view.root
     }
 
 }

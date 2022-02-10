@@ -35,8 +35,8 @@ android {
 
 dependencies {
     //Projects
-    implementation project(":data")
     implementation project(":domain:entities")
+    implementation project(":data")
 
     //Gson
     implementation gson

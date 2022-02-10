@@ -112,7 +112,7 @@ ext{
     //Room
     roomCompiler = "androidx.room:room-compiler:$roomVersion"
     roomLib = "androidx.room:room-runtime:$roomVersion"
-    roomktx = "androidx.navigation:navigation-ui-ktx:$roomVersion"
+    roomktx = "androidx.room:room-ktx:$roomVersion"
 
     // test dependencies
     jUnit =  "junit:junit:$jUnitVersion"
