@@ -13,7 +13,9 @@ class CounterUseCases @Inject constructor(private val counterRespository: Counte
     suspend fun decreaseCounterUseCase(id:String?): Flow<Result<List<Counter>>> = counterRespository.decreaseCounter(id)
     suspend fun deleteCounterUseCase(id:String): Flow<Result<List<Counter>>> = counterRespository.deleteCounter(id)
 
-
     suspend fun getLocalListCounterUseCase(): Flow<Result<List<Counter>>> = counterRespository.getLocalListCounter()
-    suspend fun createLocalCounterUseCase(counter:Counter): Flow<Result<Unit>> = counterRespository.createLocalCounter(counter)
+    suspend fun createLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.createLocalCounter(counter)
+    suspend fun increaseLocalCounterUseCase(counter: Counter): Flow<Result<List<Counter>>> = counterRespository.increaseLocalCounter(counter)
+    suspend fun decreaseLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.decreaseLocalCounter(counter)
+    suspend fun deleteLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.deleteLocalCounter(counter)
 }

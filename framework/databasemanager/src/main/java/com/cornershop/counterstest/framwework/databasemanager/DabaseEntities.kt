@@ -1,13 +1,11 @@
 package com.cornershop.counterstest.framwework.databasemanager
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "counter")
 data class CounterEntity(
-    @PrimaryKey @ColumnInfo(name = "counter_id") var id: String,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "counter_id") var id: Int,
+    @ColumnInfo(name = "counter_remote_id") var id_remote: String,
     @ColumnInfo(name = "counter_title") var title: String,
     @ColumnInfo(name = "counter_count") var count: Int
 )

@@ -1,6 +1,7 @@
 package com.example.requestmanager
 
 import com.cornershop.counterstest.entities.Counter
+import com.cornershop.counterstest.entities.CounterRaw
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTERS
 import com.example.requestmanager.APIConstants.ENDPOINT_COUNTER_DEC
@@ -14,7 +15,7 @@ interface CounterService{
     suspend fun getListCounter():List<Counter>
 
     @POST(ENDPOINT_COUNTER)
-    suspend fun createCounter(@Body title:JsonTitleServer?):List<Counter>
+    suspend fun createCounter(@Body title:JsonTitleServer?):List<CounterRaw>
 
     @POST(ENDPOINT_COUNTER_INC)
     suspend fun increaseCounter(@Body id:JsonIdServer?):List<Counter>

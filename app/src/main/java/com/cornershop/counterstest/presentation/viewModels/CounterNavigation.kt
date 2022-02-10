@@ -9,7 +9,7 @@ sealed class CounterNavigation(){
     object hideLoaderSave:CounterNavigation()
     object hideSwipeLoaderSave:CounterNavigation()
     object isSwipeLoaderSave:CounterNavigation()
-    data class onErrorLoadingCounterListNetork(val title: Int?, val message:Int?):CounterNavigation()
+    data class onErrorLoadingCounterListNetwork(val title: Int?, val message:Int?):CounterNavigation()
     data class onErrorLoadingCounterList(val title: Int?, val message:Int?):CounterNavigation()
     data class onNoResultCounterList(val message: Int?):CounterNavigation()
     data class setLoaderState(val state:Boolean):CounterNavigation()

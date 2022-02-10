@@ -23,33 +23,57 @@ class DatabaseDataSource @Inject constructor(
         }
     }
 
-    override suspend fun createCounter(counter: Counter?): Flow<Result<Unit>> {
-        val counterEntity = counter?.toCounterEntity()
+    override suspend fun createCounter(counter: Counter?):  Flow<Result<List<Counter>>>  {
         return flow {
-                emit(
-                    Result.success(counterDao.insertCounter(counterEntity))
-                )
+            if(counterDao.insertCounter(counter?.toCounterEntity()) == 1 ){
+                emit(Result.success(counterDao.getAllCounters().toCounterDomainList()))
+            }else{
+                emit(Result.failure(RuntimeException("Something went wrong")))
             }
+        }.catch {
+            emit(Result.failure(RuntimeException("Something went wrong")))
+        }
     }
 
-    override suspend fun deleteCounter(counter: Counter?): Flow<Result<Unit>> {
+    override suspend fun deleteCounter(counter: Counter?): Flow<Result<List<Counter>>> {
         val counterEntity = counter?.toCounterEntity()
         return flow {
-            emit(
-                Result.success(counterDao.deleteCounter(counterEntity))
-            )
+            if(counterDao.deleteCounter(counterEntity) == 1 ){
+                emit(Result.success(counterDao.getAllCounters().toCounterDomainList()))
+            }else{
+                emit(Result.failure(RuntimeException("Something went wrong")))
+            }
+        }.catch {
+            emit(Result.failure(RuntimeException("Something went wrong")))
+        }
+    }
+
+    override suspend fun increaseCounter(counter:Counter): Flow<Result<List<Counter>>>{
+        return flow {
+            if(counterDao.increaseCounterUpd(counter.toUpdateEntity(1))== 1 ){
+                emit(Result.success(counterDao.getAllCounters().toCounterDomainList()))
+            }else{
+                emit(Result.failure(RuntimeException("Something went wrong")))
+            }
+        }.catch {
+            emit(Result.failure(RuntimeException("Something went wrong ${it.message}")))
+        }
+    }
+
+    override suspend fun decreaseCounter(counter:Counter): Flow<Result<List<Counter>>> {
+        return flow {
+            if(counterDao.decreaseCounterUpd(counter.toUpdateEntity(-1))== 1 ){
+                emit(Result.success(counterDao.getAllCounters().toCounterDomainList()))
+            }else{
+                emit(Result.failure(RuntimeException("Something went wrong")))
+            }
+        }.catch {
+            emit(Result.failure(RuntimeException("Something went wrong ${it.message}")))
         }
     }
 
 
 
-    override suspend fun increaseCounter(id: String?): Flow<Result<List<Counter>>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun decreaseCounter(id: String?): Flow<Result<List<Counter>>> {
-        TODO("Not yet implemented")
-    }
 
 
 }

@@ -22,10 +22,9 @@ class CounterDataSource @Inject constructor(private val api:CounterService): Rem
 
     override suspend fun createCounter(title: String?): Flow<Result<List<Counter>>> {
         return flow{
-            emit(Result.success(api.createCounter(title?.toTitleJson())))
+            emit(Result.success(api.createCounter(title?.toTitleJson()).toListCounterDomain()))
         }.catch {
-            Log.d("err","${it.message}")
-            emit(Result.failure(RuntimeException("Something went wrong")))
+            emit(Result.failure(RuntimeException("Something went wrong ${it.message}")))
         }
     }
 

@@ -17,5 +17,8 @@ class CounterRespository @Inject constructor(
 
     suspend fun getLocalListCounter() = localCounterDataSource.getListCounters()
     suspend fun createLocalCounter(counter: Counter) = localCounterDataSource.createCounter(counter)
+    suspend fun increaseLocalCounter(counter:Counter) = localCounterDataSource.increaseCounter(counter)
+    suspend fun decreaseLocalCounter(counter: Counter) = localCounterDataSource.decreaseCounter(counter)
+    suspend fun deleteLocalCounter(counter: Counter) = localCounterDataSource.deleteCounter(counter)
 
 }

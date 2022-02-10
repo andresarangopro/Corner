@@ -13,8 +13,20 @@ interface CounterDao {
     suspend fun getCounterById(id: String): CounterEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCounter(counterEntity: CounterEntity?)
+    suspend fun insertCounter(counterEntity: CounterEntity?):Long
+
+    @Update(entity = CounterEntity::class)
+    fun increaseCounterUpd(obj: CounterEntity):Int
+
+    @Update(entity = CounterEntity::class)
+    fun decreaseCounterUpd(obj: CounterEntity):Int
+
+    @Query("UPDATE counter SET counter_count = counter_count+1 WHERE counter_id = :id")
+    fun increaseCounter(id: Int)
+
+    @Query("UPDATE counter SET counter_count = counter_count-1 WHERE counter_id = :id")
+    fun decreaseCounter(id: Int)
 
     @Delete
-    suspend fun deleteCounter(counterEntity: CounterEntity?)
+    suspend fun deleteCounter(counterEntity: CounterEntity?): Int
 }
