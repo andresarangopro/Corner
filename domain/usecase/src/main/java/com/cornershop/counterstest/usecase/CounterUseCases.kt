@@ -2,21 +2,15 @@ package com.cornershop.counterstest.usecase
 
 import com.cornershop.counterstest.data.CounterRespository
 import com.cornershop.counterstest.entities.Counter
-import kotlinx.coroutines.flow.Flow
+import com.example.requestmanager.vo.FetchingState
 import javax.inject.Inject
 
 class CounterUseCases @Inject constructor(private val counterRespository: CounterRespository) {
 
-    suspend fun getListCounterUseCase(): Flow<Result<List<Counter>>> = counterRespository.getListCounter()
-    suspend fun createCounterUseCase(title:String?): Flow<Result<List<Counter>>> = counterRespository.createCounter(title)
-    suspend fun increaseCounterUseCase(id:String?): Flow<Result<List<Counter>>> = counterRespository.increaseCounter(id)
-    suspend fun decreaseCounterUseCase(id:String?): Flow<Result<List<Counter>>> = counterRespository.decreaseCounter(id)
-    suspend fun deleteCounterUseCase(id:String): Flow<Result<List<Counter>>> = counterRespository.deleteCounter(id)
+    suspend fun getListCounterUseCase(): FetchingState = counterRespository.getListCounter()
+    suspend fun createCounterUseCase(title:String?): FetchingState= counterRespository.createCounter(title)
+    suspend fun increaseCounterUseCase(counter:Counter): FetchingState = counterRespository.increaseCounter(counter)
+    suspend fun decreaseCounterUseCase(counter:Counter): FetchingState = counterRespository.decreaseCounter(counter)
+    suspend fun deleteCounterUseCase(counter:Counter): FetchingState = counterRespository.deleteCounter(counter)
 
-    suspend fun getLocalListCounterUseCase(): Flow<Result<List<Counter>>> = counterRespository.getLocalListCounter()
-    suspend fun createLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.createLocalCounter(counter)
-    suspend fun createCounterFromServerUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.createCounterFromListServer(counter)
-    suspend fun increaseLocalCounterUseCase(counter: Counter): Flow<Result<List<Counter>>> = counterRespository.increaseLocalCounter(counter)
-    suspend fun decreaseLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.decreaseLocalCounter(counter)
-    suspend fun deleteLocalCounterUseCase(counter:Counter): Flow<Result<List<Counter>>> = counterRespository.deleteLocalCounter(counter)
 }

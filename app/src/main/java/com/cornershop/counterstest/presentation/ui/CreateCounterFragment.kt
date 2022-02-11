@@ -15,7 +15,7 @@ import androidx.navigation.NavOptions
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.presentation.viewModels.CounterEvent
 import com.cornershop.counterstest.presentation.viewModels.CounterNavigation
-import com.cornershop.counterstest.presentation.viewModels.utils.Event
+import com.cornershop.counterstest.presentation.viewModels.utils.State
 
 
 @AndroidEntryPoint
@@ -37,7 +37,7 @@ class CreateCounterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentCreateCounterBinding.inflate(inflater, container, false)
-        viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
+        viewModel.states.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding?.root
     }
 
@@ -58,8 +58,8 @@ class CreateCounterFragment : Fragment() {
         }
     }
 
-    private fun validateEvents(event: Event<CounterNavigation>?) {
-        event?.getContentIfNotHandled()?.let { navigation ->
+    private fun validateEvents(state: State<CounterNavigation>?) {
+        state?.getContentIfNotHandled()?.let { navigation ->
            when(navigation){
                is CounterNavigation.showLoaderSave->{
                    handlerLoaderSave(View.GONE,View.VISIBLE)

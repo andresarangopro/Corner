@@ -4,7 +4,7 @@ import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
-import com.cornershop.counterstest.presentation.viewModels.utils.Event
+import com.cornershop.counterstest.presentation.viewModels.utils.State
 import org.junit.Assert.assertEquals
 import com.cornershop.counterstest.usecase.CounterUseCases
 import com.cornershop.counterstest.utils.BaseUnitTest
@@ -78,8 +78,8 @@ class CounterViewModelShould : BaseUnitTest() {
 
         mockSuccessfulCase()
 
-        viewModel.events.captureValues {
-            assertEquals(Event(CountersViewModel.CounterNavigation.setLoaderState(false)), values.last())
+        viewModel.states.captureValues {
+            assertEquals(State(CountersViewModel.CounterNavigation.setLoaderState(false)), values.last())
         }
     }
 

@@ -45,5 +45,6 @@ dependencies {
 
     //dagger hilt
     implementation daggerHilt
+
     kapt 'com.google.dagger:hilt-compiler:2.38.1'
 }

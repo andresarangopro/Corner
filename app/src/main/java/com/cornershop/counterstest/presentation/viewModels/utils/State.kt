@@ -1,6 +1,6 @@
 package com.cornershop.counterstest.presentation.viewModels.utils
 
-data class Event<out T>(private val content:T) {
+data class State<out T>(private val content:T) {
 
     private var hasBeenHandled = false
 

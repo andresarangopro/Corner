@@ -10,9 +10,9 @@ import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toCounterDomain
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
-import com.cornershop.counterstest.presentation.parcelable.toListCounterDomain
-import com.cornershop.counterstest.presentation.viewModels.utils.Event
+import com.cornershop.counterstest.presentation.viewModels.utils.State
 import com.cornershop.counterstest.usecase.CounterUseCases
+import com.example.requestmanager.vo.FetchingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -24,8 +24,8 @@ class CountersViewModel @Inject constructor(
     private val counterUseCases: CounterUseCases
 ):ViewModel() {
 
-    private val _events = MutableLiveData<Event<CounterNavigation>>()
-    val events:LiveData<Event<CounterNavigation>> get() = _events
+    private val _states = MutableLiveData<State<CounterNavigation>>()
+    val states:LiveData<State<CounterNavigation>> get() = _states
 
     private val _currentCounterName = MutableLiveData<String>()
     val currentCounterName:LiveData<String> get()=_currentCounterName
@@ -43,60 +43,113 @@ class CountersViewModel @Inject constructor(
         this.postEvent(CounterEvent.getListCounterInit)
     }
 
-
     fun getListCounter(eventStart:CounterNavigation,
-                               eventResponse:CounterNavigation) {
-        _events.value = Event(eventStart)
+                       eventResponse:CounterNavigation) {
+        _states.value = State(eventStart)
         viewModelScope.launch {
-            counterUseCases.getListCounterUseCase().collect {
-                if (it.isSuccess) {
-//                    setListAdapter(it.getOrNull())
-//                    setListCounterOnView()
-                    it.getOrNull()?.let { listCounter -> insertInLocalDatabaseCounter(listCounter) }
-                    _events.value = Event(eventResponse)
-                } else {
-                    getLocalListCounter()
-                    _events.value = Event(eventResponse)
+            var fetchState = counterUseCases.getListCounterUseCase()
+           when( fetchState){
+               is FetchingState.Success->{
+                   setListAdapter(fetchState.data)
+                   setListCounterOnView()
+               }
+               is FetchingState.Error->{
+                   _states.value = State(eventResponse)
+               }
+           }
+            _states.value = State(eventResponse)
+        }
+    }
+
+
+    fun createCounter(title:String?){
+        _states.value = State(CounterNavigation.showLoaderSave)
+        viewModelScope.launch {
+            var fetchState =  counterUseCases.createCounterUseCase(title)
+            when( fetchState) {
+                is FetchingState.Success -> {
+                    setListAdapter(fetchState.data)
+                    setListCounterOnView()
+                    _states.value = State(CounterNavigation.hideLoaderSave)
                 }
-          }
-        }
-    }
-
-
-    private fun setListCounterOnView() {
-        if (listCounterAdapter.value?.isNotEmpty() == true) {
-            _events.value = Event(
-                CounterNavigation.setCounterList(
-                    listCounterAdapter.value,
-                    listCounterAdapter?.value?.getTimesSum()
-                )
-            )
-        } else {
-            _events.value = Event(
-                CounterNavigation.onErrorLoadingCounterList(
-                    R.string.no_counters,
-                    R.string.no_counters_phrase
-                )
-            )
-        }
-    }
-
-    fun List<CounterAdapter>?.getTimesSum():Int? = this?.map { it.count }?.sum()
-
-    fun filterCounterName(counterName:String?){
-        if(counterName!!.isNotEmpty()){
-            val temp = listCounterAdapter.value?.filterList {
-                title.lowercase().contains(counterName.lowercase())
+                is FetchingState.Error -> {
+                    _states.value = State(CounterNavigation.hideLoaderSave)
+                }
             }
-            if(temp?.isNotEmpty() == true)
-                _events.value = Event(CounterNavigation.setCounterList(temp,temp.getTimesSum()))
-            else
-                _events.value = Event(CounterNavigation.onNoResultCounterList(R.string.no_results))
-        }else{
-            _events.value = Event(CounterNavigation.setCounterList(listCounterAdapter.value,listCounterAdapter.value.getTimesSum()))
         }
     }
 
+    fun increaseCounter(counter: Counter){
+        viewModelScope.launch {
+            var fetchState =  counterUseCases.increaseCounterUseCase(counter)
+            when( fetchState) {
+                is FetchingState.Success -> {
+                    setListAdapter(fetchState.data)
+                    setListCounterOnView()
+                    _states.value = State(CounterNavigation.hideSelectedItemState)
+                }
+                is FetchingState.Error -> {
+                     Log.d("err","${fetchState.error.message}")
+                    _states.value = State(CounterNavigation.hideLoaderSave)
+                }
+            }
+        }
+    }
+
+    fun decreaseCounter(counter: Counter){
+        viewModelScope.launch {
+            var fetchState =  counterUseCases.decreaseCounterUseCase(counter)
+            when( fetchState) {
+                is FetchingState.Success -> {
+                    setListAdapter(fetchState.data)
+                    setListCounterOnView()
+                    _states.value = State(CounterNavigation.hideSelectedItemState)
+                }
+                is FetchingState.Error -> {
+                    Log.d("err","${fetchState.error.message}")
+                    _states.value = State(CounterNavigation.hideLoaderSave)
+                }
+            }
+        }
+    }
+
+    fun deleteSelectedCounters() {
+        viewModelScope.launch {
+            _listSelectedCounterAdapter.value?.map {
+                GlobalScope.async {
+                    var fetchState = counterUseCases.deleteCounterUseCase(it.toCounterDomain())
+                    when (fetchState) {
+                        is FetchingState.Success -> {
+                            withContext(Dispatchers.Main){
+                                setListAdapter(fetchState.data)
+                                setListCounterOnView()
+                            }
+                        }
+                        is FetchingState.Error -> {
+                            withContext(Dispatchers.Main) {
+                                _states.value = State(CounterNavigation.hideLoaderSave)
+                            }
+                        }
+                    }
+                }
+            }?.awaitAll()
+            _states.value = State(CounterNavigation.hideSelectedItemState)
+            _states.value = State(CounterNavigation.updateCounterList(listCounterAdapter.value,
+            listCounterAdapter.value.getTimesSum()))
+        }
+    }
+
+    fun selectedCounter(counterAdapter:CounterAdapter){
+        when(counterAdapter.selected){
+            true->{listSelectedCAdapter.add(counterAdapter)}
+            false->{listSelectedCAdapter.remove(counterAdapter)}
+        }
+        if(listSelectedCAdapter?.size?:0 > 0) {
+            _listSelectedCounterAdapter.value = listSelectedCAdapter!!
+            _states.value = State(CounterNavigation.setSelectedItemState(listSelectedCAdapter?.size))
+        }else
+            _states.value = State(CounterNavigation.hideSelectedItemState)
+    }
 
     fun manageEvent(event: CounterEvent) {
         when(event){
@@ -106,11 +159,11 @@ class CountersViewModel @Inject constructor(
             }
 
             is CounterEvent.IncreaseCounter->{
-                increaseLocalCounter(event.counter.toCounterDomain())
+                increaseCounter(event.counter.toCounterDomain())
             }
 
             is CounterEvent.DecreaseCounter->{
-                decreaseLocalCounter(event.counter.toCounterDomain())
+                decreaseCounter(event.counter.toCounterDomain())
             }
 
             is CounterEvent.FilterCounter->{
@@ -122,7 +175,7 @@ class CountersViewModel @Inject constructor(
             }
 
             is CounterEvent.DeleteSelectedCounters->{
-                deleteLocalCounter()
+                deleteSelectedCounters()
             }
 
             is CounterEvent.getListCounterFromSwipe->{
@@ -142,68 +195,43 @@ class CountersViewModel @Inject constructor(
         }
     }
 
-     fun createCounter(title:String){
-         _events.value = Event(CounterNavigation.showLoaderSave)
-         viewModelScope.launch {
-             counterUseCases.createCounterUseCase(title).collect{
-                 if(it.isSuccess){
-                     setListAdapter(it.getOrNull())
-                     _events.value = Event(CounterNavigation.updateCounterList(listCounterAdapter.value,
-                         listCounterAdapter.value.getTimesSum()))
-                     _events.value = Event(CounterNavigation.hideLoaderSave)
-                     it.getOrNull()?.let { listCounter -> insertInLocalDatabaseCounter(listCounter) }
-                 }else{
-                      createCounterLocal(Counter(0,"0",title,0))
-                     _events.value = Event(CounterNavigation.hideLoaderSave)
-                     Log.d("CounterCreated","errr ")
-                 }
-             }
-         }
-    }
-
-
-
-    fun selectedCounter(counterAdapter:CounterAdapter){
-        when(counterAdapter.selected){
-            true->{listSelectedCAdapter.add(counterAdapter)}
-            false->{listSelectedCAdapter.remove(counterAdapter)}
+    fun filterCounterName(counterName:String?){
+        if(counterName!!.isNotEmpty()){
+            val temp = listCounterAdapter.value?.filterList {
+                title.lowercase().contains(counterName.lowercase())
+            }
+            if(temp?.isNotEmpty() == true)
+                _states.value = State(CounterNavigation.setCounterList(temp,temp.getTimesSum()))
+            else
+                _states.value = State(CounterNavigation.onNoResultCounterList(R.string.no_results))
+        }else{
+            _states.value = State(CounterNavigation.setCounterList(listCounterAdapter.value,listCounterAdapter.value.getTimesSum()))
         }
-        if(listSelectedCAdapter?.size?:0 > 0) {
-            _listSelectedCounterAdapter.value = listSelectedCAdapter!!
-            _events.value = Event(CounterNavigation.setSelectedItemState(listSelectedCAdapter?.size))
-        }else
-            _events.value = Event(CounterNavigation.hideSelectedItemState)
     }
 
-    suspend fun increaseCounter(id: String?){
-            counterUseCases.increaseCounterUseCase(id).collect()
+    private fun setListCounterOnView() {
+        if (listCounterAdapter.value?.isNotEmpty() == true) {
+            _states.value = State(
+                CounterNavigation.setCounterList(
+                    listCounterAdapter.value,
+                    listCounterAdapter?.value?.getTimesSum()
+                )
+            )
+        } else {
+            _states.value = State(
+                CounterNavigation.onErrorLoadingCounterList(
+                    R.string.no_counters,
+                    R.string.no_counters_phrase
+                )
+            )
+        }
     }
 
-    suspend fun decreaseCounter(id: String?){
-        counterUseCases.decreaseCounterUseCase(id).collect()
-    }
+    fun List<CounterAdapter>?.getTimesSum():Int? = this?.map { it.count }?.sum()
 
     fun postEvent(event: CounterEvent) {
         manageEvent(event)
     }
-
-    fun getLocalListCounter(){
-        viewModelScope.launch {
-            counterUseCases.getLocalListCounterUseCase().collect {
-                if(it.isSuccess){
-                    if(it.getOrNull().isNullOrEmpty())
-                        _events.value = Event(CounterNavigation.onErrorLoadingCounterList(R.string.no_counters, R.string.no_counters_phrase))
-                    else{
-                        setListAdapter(it.getOrNull())
-                        setListCounterOnView()
-                    }
-                }else{
-                    _events.value = Event(CounterNavigation.onErrorLoadingCounterList(R.string.no_counters, R.string.no_counters_phrase))
-                }
-            }
-        }
-    }
-
 
     fun setListAdapter(listCounter:List<Counter>?){
         _listCounterAdapter.value = listCounter?.toListCounterAdapter()
@@ -214,8 +242,7 @@ class CountersViewModel @Inject constructor(
         _listCounterAdapter.value?.forEach {
            it.selected = false
         }
-
-        _events.value = Event(CounterNavigation.updateCounterList(listCounterAdapter.value,
+        _states.value = State(CounterNavigation.updateCounterList(listCounterAdapter.value,
             listCounterAdapter.value.getTimesSum()))
         clearSelectedArray()
     }
@@ -225,92 +252,4 @@ class CountersViewModel @Inject constructor(
         _listSelectedCounterAdapter.value = listSelectedCAdapter
 
     }
-
-
-    fun insertInLocalDatabaseCounter(listInsert:List<Counter>){
-        viewModelScope.launch {
-            listInsert.forEach {
-                counterUseCases.createCounterFromServerUseCase(it).collect{
-                    setListAdapter(listInsert)
-                    setListCounterOnView()
-                }
-            }
-
-        }
-    }
-
-    private suspend fun createCounterLocal(counter: Counter) {
-        counterUseCases.createLocalCounterUseCase(counter).collect {
-            if (it.isSuccess) {
-                Log.d("CounterCreated", "success")
-            } else {
-                Log.d("CounterCreated", "errr ${it.exceptionOrNull()}")
-            }
-        }
-    }
-
-
-    fun increaseLocalCounter(counter:Counter){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                counterUseCases.increaseLocalCounterUseCase(counter).collect {
-                    withContext(Dispatchers.Main) {
-                        if (it.isSuccess) {
-                            setListAdapter(it.getOrNull())
-                            _events.value = Event(CounterNavigation.updateCounterList(listCounterAdapter.value,
-                                listCounterAdapter.value.getTimesSum()))
-                                counterUseCases.increaseCounterUseCase(counter.id_remote).collect()
-                        } else {
-
-                            Log.d("CounterCreated", "err ${it.exceptionOrNull()}")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fun decreaseLocalCounter(counter:Counter){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                counterUseCases.decreaseLocalCounterUseCase(counter).collect{
-                    withContext(Dispatchers.Main) {
-                        if (it.isSuccess) {
-                            setListAdapter(it.getOrNull())
-                            _events.value = Event(CounterNavigation.updateCounterList(listCounterAdapter.value,
-                                listCounterAdapter.value.getTimesSum()))
-                                counterUseCases.decreaseCounterUseCase(counter.id_remote).collect()
-                        } else {
-
-                            Log.d("CounterCreated", "err ${it.exceptionOrNull()}")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fun deleteLocalCounter(){
-        viewModelScope.launch {
-            _listSelectedCounterAdapter.value?.map {counter->
-                GlobalScope.async {
-                    counterUseCases.deleteLocalCounterUseCase(counter.toCounterDomain()).collect{
-                        if(it.isSuccess){
-                            counterUseCases.deleteCounterUseCase(counter.id_remote).collect()
-                            withContext(Dispatchers.Main) {
-                                setListAdapter(it.getOrNull())
-                            }
-                        }    else {
-                            Log.d("CounterCDeletes", "errr ")
-                        }
-                    }
-                }
-            }?.awaitAll()
-            _events.value = Event(CounterNavigation.hideSelectedItemState)
-            _events.value = Event(CounterNavigation.updateCounterList(listCounterAdapter.value,
-            listCounterAdapter.value.getTimesSum()))
-        }
-    }
-
-
 }

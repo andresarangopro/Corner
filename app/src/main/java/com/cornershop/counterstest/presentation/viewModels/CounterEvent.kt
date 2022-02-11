@@ -1,6 +1,5 @@
 package com.cornershop.counterstest.presentation.viewModels
 
-import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 
 

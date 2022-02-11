@@ -20,7 +20,7 @@ import com.cornershop.counterstest.presentation.dialogs.MessageDialog
 import com.cornershop.counterstest.presentation.viewModels.CounterEvent
 import com.cornershop.counterstest.presentation.viewModels.CounterNavigation
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
-import com.cornershop.counterstest.presentation.viewModels.utils.Event
+import com.cornershop.counterstest.presentation.viewModels.utils.State
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.items_times_view.view.*
 
@@ -37,11 +37,11 @@ class CountersFragment : Fragment() {
     private val viewModel:CountersViewModel by viewModels()
 
 
-    private fun validateEvents(event: Event<CounterNavigation>?) {
-        event?.getContentIfNotHandled()?.let { navigation ->
+    private fun validateEvents(state: State<CounterNavigation>?) {
+        state?.getContentIfNotHandled()?.let { navigation ->
             when(navigation){
                 is CounterNavigation.setLoaderState-> navigation.run {
-                     when(state){
+                     when(this.state){
                          true -> binding.loader.visibility = View.VISIBLE
                          else -> binding.loader.visibility = View.GONE
                      }
@@ -171,7 +171,7 @@ class CountersFragment : Fragment() {
     ): View? {
         _binding = FragmentCountersBinding.inflate(inflater,container,false)
         binding.loader.visibility = View.GONE
-        viewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
+        viewModel.states.observe(viewLifecycleOwner, Observer(this::validateEvents))
         return binding.root
     }
 
