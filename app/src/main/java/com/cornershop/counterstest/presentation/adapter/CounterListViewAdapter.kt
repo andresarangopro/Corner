@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.ItemCounterBinding
-import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
-import com.cornershop.counterstest.presentation.parcelable.toCounterDomain
 import com.cornershop.counterstest.presentation.utils.DIFF_CALLBACK
-import kotlinx.android.synthetic.main.item_counter.view.*
 
 class CounterListViewAdapter(private val listenerInc:(CounterAdapter)->Unit,
                              private val listenerDec:(CounterAdapter)->Unit,
@@ -23,27 +20,27 @@ class CounterListViewAdapter(private val listenerInc:(CounterAdapter)->Unit,
     ListAdapter<CounterAdapter, CounterListViewAdapter.CounterViewHolder>(
         DIFF_CALLBACK) {
 
-    class CounterViewHolder(itemView: ItemCounterBinding,
+    class CounterViewHolder(val binding: ItemCounterBinding,
                             var listenerInc:(CounterAdapter)->Unit,
                             var listenerDec:(CounterAdapter)->Unit,
-                            var listenerSelect:(CounterAdapter)->Unit) : RecyclerView.ViewHolder(itemView.root){
+                            var listenerSelect:(CounterAdapter)->Unit) : RecyclerView.ViewHolder(binding.root){
 
-        val transparentOrange: Drawable? = ContextCompat.getDrawable(itemView.root.context, R.drawable.background_counter_selected)
-        val grayColor: Int = ContextCompat.getColor(itemView.root.context,R.color.gray)
-        val transparentColor: Int = ContextCompat.getColor(itemView.root.context,R.color.transparent)
+        val transparentOrange: Drawable? = ContextCompat.getDrawable(binding.root.context, R.drawable.background_counter_selected)
+        val grayColor: Int = ContextCompat.getColor(binding.root.context,R.color.gray)
+        val transparentColor: Int = ContextCompat.getColor(binding.root.context,R.color.transparent)
 
         fun bind(counter: CounterAdapter){
-            itemView.tvTitle.text = counter?.title
-            itemView.tvCount.text = "${counter?.count}"
+            binding.tvTitle.text = counter?.title
+            binding.tvCount.text = "${counter?.count}"
 
             if(isBiggerThanZero(counter))
-                itemView.tvCount.setTextColor(Color.BLACK)
+                binding.tvCount.setTextColor(Color.BLACK)
             else
-                itemView.tvCount.setTextColor(grayColor)
+                binding.tvCount.setTextColor(grayColor)
 
             setVisibilitySelect(counter)
 
-            itemView.tvTitle.setOnClickListener{
+            binding.tvTitle.setOnClickListener{
                 when(counter?.selected){
                     true->{counter.selected = false}
                     false->{counter?.selected = true}
@@ -52,26 +49,26 @@ class CounterListViewAdapter(private val listenerInc:(CounterAdapter)->Unit,
                 listenerSelect(counter)
             }
 
-            itemView.ivDec.setOnClickListener {
+            binding.ivDec.setOnClickListener {
                 if(isBiggerThanZero(counter)) {
                     listenerDec(counter)
                 }
             }
 
-            itemView.ivInc.setOnClickListener {
+            binding.ivInc.setOnClickListener {
                 listenerInc(counter)
             }
         }
 
         fun setVisibilitySelect(counter:CounterAdapter){
             if(counter?.selected == true) {
-                itemView.clItemCounter.background = transparentOrange
-                itemView.gpCounterHandler.visibility = View.GONE
-                itemView.ivCheck.visibility = View.VISIBLE
+                binding.clItemCounter.background = transparentOrange
+                binding.gpCounterHandler.visibility = View.GONE
+                binding.ivCheck.visibility = View.VISIBLE
             }else {
-                itemView.clItemCounter.setBackgroundColor(transparentColor)
-                itemView.gpCounterHandler.visibility = View.VISIBLE
-                itemView.ivCheck.visibility = View.GONE
+                binding.clItemCounter.setBackgroundColor(transparentColor)
+                binding.gpCounterHandler.visibility = View.VISIBLE
+                binding.ivCheck.visibility = View.GONE
 
             }
         }

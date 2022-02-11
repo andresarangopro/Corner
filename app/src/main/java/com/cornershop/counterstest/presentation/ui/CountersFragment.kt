@@ -14,6 +14,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cornershop.counterstest.R
+import com.cornershop.counterstest.databinding.ErrorMessagesViewBinding
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
 import com.cornershop.counterstest.presentation.adapter.CounterListViewAdapter
 import com.cornershop.counterstest.presentation.dialogs.MessageDialog
@@ -22,7 +23,6 @@ import com.cornershop.counterstest.presentation.viewModels.CounterNavigation
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import com.cornershop.counterstest.presentation.viewModels.utils.State
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.items_times_view.view.*
 
 
 @AndroidEntryPoint
@@ -161,8 +161,6 @@ class CountersFragment : Fragment() {
         binding.srwCounterList.setOnRefreshListener {
             viewModel.postEvent(CounterEvent.getListCounterFromSwipe)
         }
-
-
     }
 
     override fun onCreateView(
