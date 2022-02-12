@@ -5,7 +5,7 @@
 
   
 
-![alt text]()
+![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/counterApp.gif)
 
   
 
@@ -21,7 +21,7 @@ presentation: This module has all android framework using MVVM
 
   
 
-![alt text]()
+![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/Arquitecture.png)
 
   
 
