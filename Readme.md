@@ -3,10 +3,9 @@
 
 ## How it looks
 
-  
-
-![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/counterApp.gif)
-
+<p align="center">
+    <img width="270" height="555" src="gitdata/counterApp.gif">
+</p>
   
 
 ## Architecture  
@@ -21,7 +20,9 @@ presentation: This module has all android framework using MVVM
 
   
 
-![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/Arquitecture.png)
+<p align="center">
+    <img width="270" height="555" src="gitdata/Arquitecture.png">
+</p>
 
   
 
