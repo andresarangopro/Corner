@@ -117,6 +117,7 @@ class CountersFragment : Fragment() {
                 binding.viewTimesItems.visibility = View.VISIBLE
                 binding.viewTimesItems.tvItems.text = resources.getString(R.string.n_items, items)
                 binding.viewTimesItems.tvTimes.text = resources.getString(R.string.n_times, times)
+                clearPlaceHolder()
             }else{
                 binding.viewTimesItems.visibility = View.GONE
             }
