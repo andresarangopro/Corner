@@ -1,2 +1,10 @@
 include ':app'
 rootProject.name = "Counters Test"
+include ':data'
+include ':framework'
+include ':framework'
+include ':framework:requestmanager'
+include ':domain'
+include ':domain:entities'
+include ':domain:usecase'
+include ':framework:databasemanager'

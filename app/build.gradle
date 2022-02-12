@@ -1,17 +1,21 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.cornershop.counterstest"
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.applicationId
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,19 +33,70 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+
+    dataBinding {
+        enabledForTests = true
+    }
 }
 
 dependencies {
+    //Modules
+    //Project
+    implementation project(":domain:usecase")
+    implementation project(":domain:entities")
+    implementation project(":data")
+    implementation project(":framework:requestmanager")
+    implementation project(":framework:databasemanager")
+
     // build/runtime dependencies
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation jetbrainsKotlin
+    implementation androidxCoreKtx
+    implementation androidxAppCompat
+    implementation materials
+    implementation androidxConstraintLayout
+    implementation retrofit
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //lyfecycle_viewmodel
+    implementation lifeCycleViewModel
+
+    //lifecycle live data
+    implementation lifeCycleLiveData
+
+    //coroutines implementation
+    implementation coroutinesCore
+    implementation coroutinesAndroid
 
     // test dependencies
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation jUnit
+    androidTestImplementation jUnitExt
+    androidTestImplementation espresso
+
+    //dagger hilt
+    implementation daggerHilt
+    kapt daggerHiltCompilerGoogle
+    kapt daggerAndroidxHiltCompiler
+
+    //coroutines tests
+    testImplementation coroutinesTest
+    testImplementation coreTestingAndroidx
+
+    //Mockito
+    testImplementation mockitoKotlin
+    testImplementation mockitoInline
+
+
+    // Kotlin
+    implementation navigationFragment
+    implementation navigationUI
+
+
+    androidTestImplementation('com.adevinta.android:barista:4.1.0') {
+        exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
+    }
 }

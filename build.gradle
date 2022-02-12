@@ -1,26 +1,124 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.5.30"
+    ext.kotlin_version = "1.6"
     repositories {
         google()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20-M1"
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+        google()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    //SDK & Tools
+    applicationId = "com.cornershop.counterstest"
+    minSdkVersion = 23
+    targetSdkVersion = 30
+    compileSdkVersion = 31
+    versionCode = 1
+    versionName = "1.0"
+
+    // build/runtime/test dependencies versions
+    androidxCoreKtxVersion = "1.6.0"
+    androidxAppCompatVersion = "1.3.1"
+    materialsVersion = "1.3.0"
+    androidxConstraintLayoutVersion = "2.1.0"
+    retrofitVersion = "2.9.0"
+    jUnitVersion = "4.13.2"
+    jUnitExtVersion = "1.1.2"
+    espressoVersion = "3.3.0"
+    nav_version = "2.4.0"
+    retrofitVersion = '2.9.0'
+    gsonVersion = '2.8.6'
+    okHttpLoggingInterceptorVersion = '4.7.2'
+    daggerhiltversion = "2.38.1"
+    daggerhiltCompilerversion = "2.38.1"
+    daggerAndroidxHiltCompilerVersion = "1.0.0-alpha01"
+    lifecycleVersion = "2.3.0-beta01"
+    lifecycleLiveDataVersion = "2.2.0"
+    okhttp3Version ="1.0.0"
+    roomVersion = '2.2.5'
+
+    //coroutines versions
+    coroutinesCoreVersion = "1.3.9"
+    coroutinesAndroidVersion = "1.3.9"
+    coroutinesTestVersion = "1.3.9"
+    mockitoKotlinVersion = "2.1.0"
+    mockitoInlineVersion = "2.21.0"
+    coreTestingVersion = "2.1.0"
+
+    //OkHttp
+    okHttpInterceptorLib = "com.squareup.okhttp3:logging-interceptor:$okHttpLoggingInterceptorVersion"
+
+    //okhttp3
+    okhttp3IdlingResources = "com.jakewharton.espresso:okhttp3-idling-resource:$okhttp3Version"
+
+    //Retrofit
+    retrofitGsonLib = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    retrofitRxJavaLib = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    gson = "com.google.code.gson:gson:$gsonVersion"
+
+    // build/runtime dependencies
+    jetbrainsKotlin = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    androidxCoreKtx = "androidx.core:core-ktx:$androidxCoreKtxVersion"
+    androidxAppCompat = "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    materials = "com.google.android.material:material:$materialsVersion"
+    androidxConstraintLayout = "androidx.constraintlayout:constraintlayout:$androidxConstraintLayoutVersion"
+    retrofit =  "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    navigationFragment = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    navigationUI = "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+
+    //dagger Hilt
+    daggerHilt = "com.google.dagger:hilt-android:$daggerhiltversion"
+    daggerHiltCompilerGoogle = "com.google.dagger:hilt-compiler:$daggerhiltCompilerversion"
+    daggerAndroidxHiltCompiler = "androidx.hilt:hilt-compiler:$daggerAndroidxHiltCompilerVersion"
+
+    //coroutines implementation
+    coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
+    coroutinesAndroid =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroidVersion"
+
+    //lifecycle
+    lifeCycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+
+    //lifecycle live data
+    lifeCycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleLiveDataVersion"
+
+    //coroutines tests
+    coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
+    //core testing
+    coreTestingAndroidx = "androidx.arch.core:core-testing:$coreTestingVersion"
+
+    mockitoKotlin =  "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    mockitoInline =  "org.mockito:mockito-inline:$mockitoInlineVersion"
+
+    //Room
+    roomCompiler = "androidx.room:room-compiler:$roomVersion"
+    roomLib = "androidx.room:room-runtime:$roomVersion"
+    roomktx = "androidx.room:room-ktx:$roomVersion"
+
+    // test dependencies
+    jUnit =  "junit:junit:$jUnitVersion"
+    jUnitExt = "androidx.test.ext:junit:$jUnitExtVersion"
+    espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
 }
