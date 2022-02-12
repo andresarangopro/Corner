@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -79,7 +79,8 @@ dependencies {
 
     //dagger hilt
     implementation daggerHilt
-    kapt 'com.google.dagger:hilt-compiler:2.38.1'
+    kapt daggerHiltCompilerGoogle
+    kapt daggerAndroidxHiltCompiler
 
     //coroutines tests
     testImplementation coroutinesTest

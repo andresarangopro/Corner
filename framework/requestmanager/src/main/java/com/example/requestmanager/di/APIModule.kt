@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataModule {
+abstract class RquestManagerModule {
 
     @Binds
     abstract fun providesCounterRemoteSource(

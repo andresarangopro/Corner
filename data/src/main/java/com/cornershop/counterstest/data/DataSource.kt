@@ -29,4 +29,5 @@ interface LocalCounterDataSource:CommonCounterDataSource{
    suspend fun deleteCounter(counter:Counter?):Int
    suspend fun increaseCounter(counter:Counter):Int
    suspend fun decreaseCounter(counter:Counter):Int
+   suspend fun deleteAllCounterTable():Int
 }

@@ -7,8 +7,7 @@ import androidx.room.Room
 import com.cornershop.counterstest.data.LocalCounterDataSource
 import com.cornershop.counterstest.framwework.databasemanager.CounterDao
 import com.cornershop.counterstest.framwework.databasemanager.CounterDatabase
-import com.cornershop.counterstest.framwework.databasemanager.DatabaseDataSource
-import dagger.Binds
+import com.cornershop.counterstest.framwework.databasemanager.LocalCounterDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,9 +37,9 @@ object Module {
     @Provides
     @Singleton
     fun providesCounterLocalDataSource(
-        databaseDatasource: DatabaseDataSource
+        localCounterDatasourceImpl: LocalCounterDataSourceImpl
     ):LocalCounterDataSource {
-        return databaseDatasource
+        return localCounterDatasourceImpl
     }
     
     @Provides

@@ -24,12 +24,7 @@ class CreateCounterFragment : Fragment() {
     private var _binding:FragmentCreateCounterBinding?=null
     private val binding get() = _binding
 
-
     private val viewModel:CountersViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,12 +45,21 @@ class CreateCounterFragment : Fragment() {
         }
 
         binding?.tvSave?.setOnClickListener {
-            viewModel.postEvent(
-                CounterEvent.CreateCounter(
-                   binding?.etCounter?.text.toString()
-                )
-            )
+            when(validateNameCounter()){
+                true->{
+                    viewModel.postEvent(
+                        CounterEvent.CreateCounter(
+                            binding?.etCounter?.text.toString()
+                        )
+                    )
+                }
+                false->{binding?.etCounter?.setError(resources.getString(R.string.err_empty_title))}
+            }
         }
+    }
+
+    private fun validateNameCounter():Boolean{
+        return binding?.etCounter?.text?.isNotBlank() == true && binding?.etCounter?.text?.isNotEmpty() == true
     }
 
     private fun validateEvents(state: State<CounterNavigation>?) {
@@ -81,9 +85,4 @@ class CreateCounterFragment : Fragment() {
         binding?.etCounter?.setText("")
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            CreateCounterFragment().apply {            }
-    }
 }

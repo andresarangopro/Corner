@@ -1,7 +1,6 @@
 package com.cornershop.counterstest.framwework.databasemanager
 
 import androidx.room.*
-import com.cornershop.counterstest.entities.Counter
 
 @Dao
 interface CounterDao {
@@ -23,4 +22,7 @@ interface CounterDao {
 
     @Delete
     suspend fun deleteCounter(counterEntity: CounterEntity?): Int
+
+    @Query("DELETE FROM counter")
+    fun nukeTable():Int
 }

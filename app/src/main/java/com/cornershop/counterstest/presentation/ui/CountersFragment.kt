@@ -14,7 +14,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cornershop.counterstest.R
+import com.cornershop.counterstest.databinding.ErrorMessagesViewBinding
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
+import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.adapter.CounterListViewAdapter
 import com.cornershop.counterstest.presentation.dialogs.MessageDialog
 import com.cornershop.counterstest.presentation.viewModels.CounterEvent
@@ -22,7 +24,6 @@ import com.cornershop.counterstest.presentation.viewModels.CounterNavigation
 import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import com.cornershop.counterstest.presentation.viewModels.utils.State
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.items_times_view.view.*
 
 
 @AndroidEntryPoint
@@ -31,11 +32,9 @@ class CountersFragment : Fragment() {
     private var _binding: FragmentCountersBinding? = null
     private val binding get() = _binding!!
 
-
     lateinit var counterListAdapter:CounterListViewAdapter
 
     private val viewModel:CountersViewModel by viewModels()
-
 
     private fun validateEvents(state: State<CounterNavigation>?) {
         state?.getContentIfNotHandled()?.let { navigation ->
@@ -48,12 +47,19 @@ class CountersFragment : Fragment() {
                 }
 
                 is CounterNavigation.setCounterList->navigation.run{
-                    setTimesAndItems(listCounter?.size,timesSum)
+                    val itemsCount= listCounter?.size?:0
+                    setTimesAndItems(itemsCount,timesSum)
+                    if(itemsCount <= 0)
+                        setErrorPlaceHolder(this)
                     counterListAdapter.submitList(listCounter)
                 }
 
                 is CounterNavigation.updateCounterList ->navigation.run {
-                    setTimesAndItems(listCounter?.size,timesSum)
+                    val itemsCount= listCounter?.size?:0
+                    clearPlaceHolder()
+                    if(itemsCount <= 0)
+                        setErrorPlaceHolder(this)
+                    setTimesAndItems(itemsCount,timesSum)
                     counterListAdapter.submitList(listCounter)
                     counterListAdapter.notifyDataSetChanged()
                 }
@@ -78,6 +84,12 @@ class CountersFragment : Fragment() {
 
                 is CounterNavigation.onErrorLoadingCounterList-> navigation.run{
                     showErrorNotCountersYet(title,message)
+                }
+
+                is CounterNavigation.onNoResultCounterList->navigation.run {
+                    setTimesAndItems(0,0)
+                    setErrorPlaceHolder(this)
+                    counterListAdapter.submitList(listOf())
                 }
 
                 is CounterNavigation.onErrorLoadingCounterListNetwork-> navigation.run{
@@ -107,9 +119,26 @@ class CountersFragment : Fragment() {
                 binding.viewTimesItems.tvTimes.text = resources.getString(R.string.n_times, times)
             }else{
                 binding.viewTimesItems.visibility = View.GONE
-                showErrorNotCountersYet(R.string.no_counters, R.string.no_counters_phrase)
             }
         }
+    }
+
+    private fun setErrorPlaceHolder(counterNavigation: CounterNavigation){
+        when(counterNavigation){
+            is CounterNavigation.onNoResultCounterList-> {
+                showErrorNotCountersYet(null, R.string.no_results)
+            }
+            else->{
+                showErrorNotCountersYet(R.string.no_counters, R.string.no_counters_phrase)
+
+            }
+        }
+    }
+
+    private fun clearPlaceHolder() {
+        binding.errMessage.message = ""
+        binding.errMessage.title = ""
+        binding.errMessage.setView()
     }
 
     private fun setVisibilityTopSetup(clSelectVisibility:Int, searchViewVisibility: Int) {
@@ -161,8 +190,6 @@ class CountersFragment : Fragment() {
         binding.srwCounterList.setOnRefreshListener {
             viewModel.postEvent(CounterEvent.getListCounterFromSwipe)
         }
-
-
     }
 
     override fun onCreateView(
@@ -191,7 +218,6 @@ class CountersFragment : Fragment() {
                 }
             )
             adapter = counterListAdapter
-
         }
     }
 

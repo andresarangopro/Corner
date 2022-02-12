@@ -3,14 +3,16 @@ package com.cornershop.counterstest.presentation.ui.customviews
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.cornershop.counterstest.R
-import kotlinx.android.synthetic.main.error_messages_view.view.*
+import com.cornershop.counterstest.databinding.ErrorMessagesViewBinding
 
 class ErrorMessagesView: FrameLayout {
 
-    lateinit var view :View
+    lateinit var view :ErrorMessagesViewBinding
 
     var title:String? = null
         internal set
@@ -25,6 +27,14 @@ class ErrorMessagesView: FrameLayout {
         attrs,
         defStyle){
         initView()
+    }
+
+    fun setTitle(title:String){
+        this.title = title
+    }
+
+    fun setMessage(message:String){
+        this.message = message
     }
 
     fun setActionRetry(action:OnClickListener){
@@ -76,8 +86,11 @@ class ErrorMessagesView: FrameLayout {
     fun String.isNotNullAndEmpty() = this?.isNotEmpty() && this?.isNotEmpty()
 
     private fun initView(){
-        view = View.inflate(context, R.layout.error_messages_view, null)
-        addView(view)
+        view = ErrorMessagesViewBinding.inflate(
+            LayoutInflater.from(context),
+            parent as ViewGroup?, false)
+
+        addView(view.root)
     }
 
 

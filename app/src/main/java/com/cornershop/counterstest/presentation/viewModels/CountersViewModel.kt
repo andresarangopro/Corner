@@ -89,7 +89,6 @@ class CountersViewModel @Inject constructor(
                     _states.value = State(CounterNavigation.hideSelectedItemState)
                 }
                 is FetchingState.Error -> {
-                     Log.d("err","${fetchState.error.message}")
                     _states.value = State(CounterNavigation.hideLoaderSave)
                 }
             }
@@ -106,7 +105,6 @@ class CountersViewModel @Inject constructor(
                     _states.value = State(CounterNavigation.hideSelectedItemState)
                 }
                 is FetchingState.Error -> {
-                    Log.d("err","${fetchState.error.message}")
                     _states.value = State(CounterNavigation.hideLoaderSave)
                 }
             }
