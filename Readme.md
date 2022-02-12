@@ -28,7 +28,7 @@ presentation: This module has all android framework using MVVM
 ## Troubleshooting
   
 
-if you get an error running Android test remember change direction ip in module framework:requestmanager is in the file named APIConstants
+if you get an error running Android app remember change direction ip in module framework:requestmanager is in the file named APIConstants
 
   
 
