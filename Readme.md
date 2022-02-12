@@ -21,8 +21,6 @@ repository : his responsibility is to sync server data with the local, taking as
 
 presentation: This module has all android framework using MVVM
 
-presentation: This module has all android framework using MVVM 
-
 framework: this module separate the external libraries from the other layers, in this case retrofit and room.
 
 ![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/Arquitecture.png)
