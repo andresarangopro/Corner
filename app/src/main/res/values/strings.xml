@@ -54,6 +54,7 @@
     <string name="n_per_counter_name">%d × %s</string>
     <string name="preference_file_key">get_started</string>
     <string name="pref_previously_started">previous_started</string>
+    <string name="err_empty_title">Should give a name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -35,6 +35,7 @@ android {
 
 dependencies {
     //Project
+    implementation project(':framework:requestmanager')
     implementation project(":domain:entities")
     implementation project(":data")
 
@@ -49,6 +50,5 @@ dependencies {
 
     //dagger hilt
     implementation daggerHilt
-    implementation project(path: ':framework:requestmanager')
-    kapt 'com.google.dagger:hilt-compiler:2.38.1'
+    kapt daggerHiltCompilerGoogle
 }

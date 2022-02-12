@@ -1,11 +1,11 @@
 package com.cornershop.counterstest.usecase
 
-import com.cornershop.counterstest.data.CounterRespository
+import com.cornershop.counterstest.data.CounterRepository
 import com.cornershop.counterstest.entities.Counter
 import com.example.requestmanager.vo.FetchingState
 import javax.inject.Inject
 
-class CounterUseCases @Inject constructor(private val counterRespository: CounterRespository) {
+class CounterUseCases @Inject constructor(private val counterRespository: CounterRepository) {
 
     suspend fun getListCounterUseCase(): FetchingState = counterRespository.getListCounter()
     suspend fun createCounterUseCase(title:String?): FetchingState= counterRespository.createCounter(title)

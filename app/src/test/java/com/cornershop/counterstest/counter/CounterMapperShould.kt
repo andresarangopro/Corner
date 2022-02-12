@@ -9,7 +9,7 @@ import org.junit.Test
 
 class CounterMapperShould:BaseUnitTest() {
 
-    private val counterList = listOf(Counter("1","title",1))
+    private val counterList = listOf(Counter(0,"1","title",1))
     val counterAdapter = counterList.toListCounterAdapter()
 
     @Test
@@ -17,6 +17,15 @@ class CounterMapperShould:BaseUnitTest() {
 
         counterList.forEachIndexed(){index,item->
             assertEquals(item.id, counterAdapter[index].id)
+        }
+
+    }
+
+    @Test
+    fun keepSameRemoteId(){
+
+        counterList.forEachIndexed(){index,item->
+            assertEquals(item.id_remote, counterAdapter[index].id_remote)
         }
 
     }

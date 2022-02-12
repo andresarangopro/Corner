@@ -79,8 +79,8 @@ dependencies {
 
     //dagger hilt
     implementation daggerHilt
-    kapt 'com.google.dagger:hilt-compiler:2.38.1'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+    kapt daggerHiltCompilerGoogle
+    kapt daggerAndroidxHiltCompiler
 
     //coroutines tests
     testImplementation coroutinesTest

@@ -10,7 +10,7 @@ import java.lang.Exception
 import java.lang.RuntimeException
 import javax.inject.Inject
 
-class DatabaseDataSource @Inject constructor(
+class LocalCounterDataSourceImpl @Inject constructor(
     private val counterDao:CounterDao
 ):LocalCounterDataSource {
 
@@ -46,6 +46,10 @@ class DatabaseDataSource @Inject constructor(
 
     override suspend fun decreaseCounter(counter:Counter): Int {
          return counterDao.decreaseCounterUpd(counter.toCounterEntitySetCount(-1))
+    }
+
+    override suspend fun deleteAllCounterTable(): Int {
+        return counterDao.nukeTable()
     }
 
 }

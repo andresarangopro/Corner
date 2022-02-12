@@ -10,6 +10,14 @@ class CounterAdapter(
     var selected:Boolean
 ){
 
+    override fun equals(other: Any?): Boolean {
+        if(other is CounterAdapter){
+            if(other.id == id && other.id_remote == id_remote && other.title == title && other.count == count && other.selected == selected)
+                return true
+        }
+        return false
+    }
+
      override fun toString(): String {
          return title
      }

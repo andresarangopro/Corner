@@ -51,6 +51,19 @@ dependencies {
 
     //dagger hilt
     implementation daggerHilt
-    kapt 'com.google.dagger:hilt-compiler:2.38.1'
+    kapt daggerHiltCompilerGoogle
+
+    // test dependencies
+    testImplementation jUnit
+    androidTestImplementation jUnitExt
+    androidTestImplementation espresso
+
+    //coroutines tests
+    testImplementation coroutinesTest
+    testImplementation coreTestingAndroidx
+
+    //Mockito
+    testImplementation mockitoKotlin
+    testImplementation mockitoInline
 
 }

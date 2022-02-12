@@ -53,6 +53,7 @@ ext{
     okHttpLoggingInterceptorVersion = '4.7.2'
     daggerhiltversion = "2.38.1"
     daggerhiltCompilerversion = "2.38.1"
+    daggerAndroidxHiltCompilerVersion = "1.0.0-alpha01"
     lifecycleVersion = "2.3.0-beta01"
     lifecycleLiveDataVersion = "2.2.0"
     okhttp3Version ="1.0.0"
@@ -90,7 +91,8 @@ ext{
 
     //dagger Hilt
     daggerHilt = "com.google.dagger:hilt-android:$daggerhiltversion"
-    daggerHiltCompiler = "com.google.dagger:hilt-android:$daggerhiltCompilerversion"
+    daggerHiltCompilerGoogle = "com.google.dagger:hilt-compiler:$daggerhiltCompilerversion"
+    daggerAndroidxHiltCompiler = "androidx.hilt:hilt-compiler:$daggerAndroidxHiltCompilerVersion"
 
     //coroutines implementation
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
