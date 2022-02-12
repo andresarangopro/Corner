@@ -20,9 +20,8 @@ presentation: This module has all android framework using MVVM
 
   
 
-<p align="center">
-    <img width="270" height="555" src="gitdata/Arquitecture.png">
-</p>
+
+![alt text](https://github.com/andresarangopro/Corner/blob/SP1-recycler-changed-to-list/gitdata/Arquitecture.png)
 
   
 
