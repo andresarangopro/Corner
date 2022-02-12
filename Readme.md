@@ -1,5 +1,8 @@
 # Architecture Components
-  
+![Language](https://img.shields.io/badge/Language-Kotlin%201.6-green)](https://developer.android.com/kotlin?gclid=CjwKCAjwtdeFBhBAEiwAKOIy55ieWxLXtWidj5YnTw364KCyEj8WDC20Fu-Jgq8yckexge58KMNgwRoCXQYQAvD_BwE&gclsrc=aw.ds)
+
+[![Framework](https://img.shields.io/badge/Framework-Android%20Studio-blue)](https://developer.android.com/studio?gclid=CjwKCAjwtdeFBhBAEiwAKOIy52mw_xYp6g53m4PHlqEt9g4vckcNL16ylXAxdM8r4RY-yENilB4SrBoCDw0QAvD_BwE&gclsrc=aw.ds)
+
 
 ## How it looks
 
