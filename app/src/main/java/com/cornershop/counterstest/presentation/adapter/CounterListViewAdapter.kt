@@ -30,7 +30,7 @@ class CounterListViewAdapter(private val listenerInc:(CounterAdapter)->Unit,
         val transparentColor: Int = ContextCompat.getColor(binding.root.context,R.color.transparent)
 
         fun bind(counter: CounterAdapter){
-            binding.tvTitle.text = counter?.title
+            binding.tvCounterName.text = counter?.title
             binding.tvCount.text = "${counter?.count}"
 
             if(isBiggerThanZero(counter))
@@ -40,7 +40,7 @@ class CounterListViewAdapter(private val listenerInc:(CounterAdapter)->Unit,
 
             setVisibilitySelect(counter)
 
-            binding.tvTitle.setOnClickListener{
+            binding.tvCounterName.setOnClickListener{
                 when(counter?.selected){
                     true->{counter.selected = false}
                     false->{counter?.selected = true}
