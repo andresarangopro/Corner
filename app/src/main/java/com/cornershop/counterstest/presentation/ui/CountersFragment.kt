@@ -1,6 +1,7 @@
 package com.cornershop.counterstest.presentation.ui
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +15,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cornershop.counterstest.R
-import com.cornershop.counterstest.databinding.ErrorMessagesViewBinding
 import com.cornershop.counterstest.databinding.FragmentCountersBinding
-import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.adapter.CounterListViewAdapter
 import com.cornershop.counterstest.presentation.dialogs.MessageDialog
 import com.cornershop.counterstest.presentation.viewModels.CounterEvent
@@ -161,7 +160,6 @@ class CountersFragment : Fragment() {
             }
 
         })
-
         setupListAdapter()
 
         binding.btnAddCounter.setOnClickListener {
