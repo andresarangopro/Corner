@@ -1,22 +1,4 @@
 <resources>
-    <!-- Examples -->
-    <string-array name="drinks_array">
-        <item>Cups of coffee</item>
-        <item>Glasses of water</item>
-        <item>Tequila shots</item>
-        <item>Caipirinhas</item>
-    </string-array>
-    <string-array name="food_array">
-        <item>Hot-dogs</item>
-        <item>Cupcakes eaten</item>
-        <item>Chicken sandwich</item>
-    </string-array>
-    <string-array name="misc_array">
-        <item>Times sneezed</item>
-        <item>Naps</item>
-        <item>Day dreaming</item>
-    </string-array>
-
     <!-- Others -->
     <string name="app_name">Counters Test</string>
     <string name="welcome_title">Counters</string>
@@ -28,8 +10,14 @@
 —Willie Nelson</string>
     <string name="search_counters">Search Counters</string>
     <string name="add_counters">Add counters</string>
-    <string name="n_items">%d items</string>
-    <string name="n_times">%d times</string>
+    <plurals name="n_items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+    <plurals name="n_times">
+        <item quantity="one">%d time</item>
+        <item quantity="other">%d times</item>
+    </plurals>
     <string name="n_selected">%d selected</string>
     <string name="error_load_counters_title">Couldn’t load the counters</string>
     <string name="error_creating_counter_title">Couldn’t create the counter</string>
@@ -55,6 +43,12 @@
     <string name="preference_file_key">get_started</string>
     <string name="pref_previously_started">previous_started</string>
     <string name="err_empty_title">Should give a name</string>
+    <string name="count">%d</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="desc_iv_cancel">Is a icon of a x to cancel an action</string>
+    <string name="desc_iv_delete">Is a icon of a garbage collector to cancel an action</string>
+    <string name="desc_iv_dec">Is a icon of a cross to increase counters</string>
+    <string name="desc_iv_inc">Is a icon of a bar  to dicrease counters</string>
+    <string name="desc_iv_check">Is a icon of a check to comprube the item is selected</string>
 </resources>

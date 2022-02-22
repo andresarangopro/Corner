@@ -1,5 +1,6 @@
 package com.cornershop.counterstest.counter
 
+import com.cornershop.counterstest.data.vo.FetchingState
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
@@ -9,13 +10,14 @@ import com.cornershop.counterstest.presentation.viewModels.utils.State
 import com.cornershop.counterstest.usecase.CounterUseCases
 import com.cornershop.counterstest.utils.BaseUnitTest
 import com.cornershop.counterstest.utils.captureValues
-import com.example.requestmanager.vo.FetchingState
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
 
 class CounterViewModelShould : BaseUnitTest() {
 
@@ -25,43 +27,19 @@ class CounterViewModelShould : BaseUnitTest() {
 
     private val counterlist: List<Counter> = listOf(Counter(0, "1", "title", 1))
 
-    private val CounterlistCreatingTitle: List<Counter> =
-        listOf(Counter(0, "1", "title", 1), Counter(0, "$id", "$title", 0))
+    private val counterlistCreatingTitle: List<Counter> =
+        listOf(Counter(0, "1", "title", 1), Counter(0, id, title, 0))
 
     private val counterAdapterlist: List<CounterAdapter> = counterlist.toListCounterAdapter()
 
-    private val expected = Result.success(counterlist)
-
-    private val expectedCounterlistCreatingTitle = Result.success(CounterlistCreatingTitle)
-
     private val expectedCounterlistAdapterCreatingTitle =
-        Result.success(CounterlistCreatingTitle.toListCounterAdapter())
-
-    private val exception = RuntimeException("Something went wrong")
-
-    private val error = Result.failure<List<Counter>>(exception)
-
-    private lateinit var viewModel: CountersViewModel
-
-    private val errorExpected = "dummyApiError"
-
-    private val mockNavigation: CounterNavigation = mock()
-
-    private val mockErrorIOException = mock<IOException> {
-        onBlocking { message } doReturn errorExpected
-    }
-
-    //
-    private val mockCounterUserCaseError = mock<CounterUseCases> {
-        onBlocking { getListCounterUseCase() } doReturn FetchingState.Error(mockErrorIOException)
-        onBlocking { createCounterUseCase(title) } doReturn FetchingState.Error(mockErrorIOException)
-    }
+        Result.success(counterlistCreatingTitle.toListCounterAdapter())
 
 
     private val mockCounterUserCaseSuccess = mock<CounterUseCases> {
         onBlocking { getListCounterUseCase() } doReturn FetchingState.Success(counterlist)
         onBlocking { createCounterUseCase(title) } doReturn FetchingState.Success(
-            CounterlistCreatingTitle
+            counterlistCreatingTitle
         )
         onBlocking { increaseCounterUseCase(counterlist[0]) } doReturn FetchingState.Success(
             counterlist
@@ -87,7 +65,7 @@ class CounterViewModelShould : BaseUnitTest() {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
         runBlocking {
             //verify(mockCounterUserCaseSuccess, times(1)).getListCounterUseCase()
-            assert(counterAdapterlist.equals(viewModel.listCounterAdapter.value))
+            assert(counterAdapterlist == viewModel.listCounterAdapter.value)
         }
     }
 
@@ -96,7 +74,7 @@ class CounterViewModelShould : BaseUnitTest() {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
         runBlocking {
             viewModel.states.captureValues {
-                assertEquals(State(CounterNavigation.setLoaderState(false)), values.last())
+                assertEquals(State(CounterNavigation.SetLoaderState(false)), values.last())
             }
         }
     }

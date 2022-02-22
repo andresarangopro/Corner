@@ -4,16 +4,13 @@ import com.example.requestmanager.APIConstants.BASE_API_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import com.jakewharton.espresso.OkHttp3IdlingResource
 
 val client = OkHttpClient()
-val idlingResource = OkHttp3IdlingResource.create("okhttp", client)
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,7 +18,7 @@ object CounterModule {
 
     @Singleton
     @Provides
-    fun counterAPI(retrofit: Retrofit)= retrofit.create(CounterService::class.java)
+    fun counterAPI(retrofit: Retrofit): CounterService = retrofit.create(CounterService::class.java)
 
 
     @Singleton

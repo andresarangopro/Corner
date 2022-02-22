@@ -1,8 +1,7 @@
 package com.cornershop.counterstest.presentation.ui
 
-import android.content.res.Configuration
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +19,17 @@ class WelcomeFragment : Fragment() {
     private var _binding: FragmentWelcomeBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var sharedPref:SharedPreferences
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentWelcomeBinding.inflate(inflater,container, false)
+    ): View {
+        _binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         sharedPref = activity?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )!!
-        if(isOpenBefore() == true)
+        if (isOpenBefore())
             getStartedAction()
         return binding.root
     }
@@ -38,7 +37,7 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.layoutInclude?.buttonStart?.setOnClickListener {
+        binding.layoutInclude.buttonStart.setOnClickListener {
             getStartedAction()
             commitFragmentIsOpenBefore()
         }
@@ -48,12 +47,12 @@ class WelcomeFragment : Fragment() {
     private fun commitFragmentIsOpenBefore() {
         val edit = sharedPref.edit()
         edit.putBoolean(getString(R.string.pref_previously_started), java.lang.Boolean.TRUE)
-        edit.commit()
+        edit.apply()
     }
 
 
-    fun isOpenBefore(): Boolean? {
-        return sharedPref?.getBoolean(getString(R.string.pref_previously_started),false)
+    private fun isOpenBefore(): Boolean {
+        return sharedPref.getBoolean(getString(R.string.pref_previously_started), false)
     }
 
     private fun getStartedAction() {
@@ -62,8 +61,4 @@ class WelcomeFragment : Fragment() {
         findNavController().navigate(action, navOptions)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 }

@@ -6,23 +6,23 @@ import androidx.room.*
 interface CounterDao {
 
     @Query("SELECT * FROM Counter")
-     fun getAllCounters():List<CounterEntity>
+    fun getAllCounters(): List<CounterEntity>
 
     @Query("SELECT * FROM counter WHERE counter_remote_id = :id")
     suspend fun getCounterById(id: String): CounterEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCounter(counterEntity: CounterEntity?):Long
+    suspend fun insertCounter(counterEntity: CounterEntity?): Long
 
     @Update(entity = CounterEntity::class)
-    fun increaseCounterUpd(obj: CounterEntity):Int
+    fun increaseCounterUpd(obj: CounterEntity): Int
 
     @Update(entity = CounterEntity::class)
-    fun decreaseCounterUpd(obj: CounterEntity):Int
+    fun decreaseCounterUpd(obj: CounterEntity): Int
 
     @Delete
     suspend fun deleteCounter(counterEntity: CounterEntity?): Int
 
     @Query("DELETE FROM counter")
-    fun nukeTable():Int
+    fun nukeTable(): Int
 }

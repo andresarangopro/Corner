@@ -10,7 +10,6 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.platform.app.InstrumentationRegistry
-import java.util.regex.Matcher
 
 
 inline fun waitUntilLoaded(crossinline recyclerProvider: () -> RecyclerView) {

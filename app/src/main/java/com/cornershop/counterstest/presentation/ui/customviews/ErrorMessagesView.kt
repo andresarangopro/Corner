@@ -2,97 +2,96 @@ package com.cornershop.counterstest.presentation.ui.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.cornershop.counterstest.R
 import com.cornershop.counterstest.databinding.ErrorMessagesViewBinding
 
-class ErrorMessagesView: FrameLayout {
+class ErrorMessagesView : FrameLayout {
 
-    lateinit var view :ErrorMessagesViewBinding
+    lateinit var view: ErrorMessagesViewBinding
 
-    var title:String? = null
+    var title: String? = null
         internal set
-    var message:String?=null
+    var message: String? = null
         internal set
 
-    var actionRetry:OnClickListener?=null
-        private set
+    private var actionRetry: OnClickListener? = null
 
-    constructor(context: Context, attrs: AttributeSet, defStyle:Int):super(
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
         context,
         attrs,
-        defStyle){
+        defStyle
+    ) {
         initView()
     }
 
-    fun setTitle(title:String){
+    fun setTitle(title: String) {
         this.title = title
     }
 
-    fun setMessage(message:String){
+    fun setMessage(message: String) {
         this.message = message
     }
 
-    fun setActionRetry(action:OnClickListener){
+    fun setActionRetry(action: OnClickListener) {
         this.actionRetry = action
     }
 
-    constructor(context: Context, attrs: AttributeSet):super(
+    constructor(context: Context, attrs: AttributeSet) : super(
         context,
-        attrs ){
+        attrs
+    ) {
         initView()
     }
 
-    constructor(context: Context):super(context){
+    constructor(context: Context) : super(context) {
         initView()
     }
 
-    fun setView(){
-        if(title?.isNotNullAndEmpty() == true) {
+    fun setView() {
+        if (title?.isNotNullAndEmpty() == true) {
             view.tvTitle.visibility = View.VISIBLE
             view.tvTitle.text = title
-        }else{
-            if(view.tvTitle.visibility == View.VISIBLE)
+        } else {
+            if (view.tvTitle.visibility == View.VISIBLE)
                 view.tvTitle.visibility = View.GONE
         }
-        if(message?.isNotNullAndEmpty() == true) {
+        if (message?.isNotNullAndEmpty() == true) {
             view.tvMessage.visibility = View.VISIBLE
             view.tvMessage.text = message
-        }else{
-            if(view.tvMessage.visibility == View.VISIBLE)
+        } else {
+            if (view.tvMessage.visibility == View.VISIBLE)
                 view.tvMessage.visibility = View.GONE
         }
-        if(actionRetry != null) {
+        if (actionRetry != null) {
             view.tvRetry.visibility = View.VISIBLE
-            view.tvRetry.setOnClickListener (actionRetry)
+            view.tvRetry.setOnClickListener(actionRetry)
 
-        }else{
-            if(view.tvRetry.visibility == View.VISIBLE)
+        } else {
+            if (view.tvRetry.visibility == View.VISIBLE)
                 view.tvRetry.visibility = View.GONE
         }
     }
 
-    fun hideAll(){
+    fun hideAll() {
         view.tvTitle.visibility = View.GONE
         view.tvMessage.visibility = View.GONE
         view.tvRetry.visibility = View.GONE
         actionRetry = null
     }
 
-    fun String.isNotNullAndEmpty() = this?.isNotEmpty() && this?.isNotEmpty()
+    private fun String.isNotNullAndEmpty() = this.isNotEmpty() && this.isNotEmpty()
 
-    private fun initView(){
+    private fun initView() {
         view = ErrorMessagesViewBinding.inflate(
             LayoutInflater.from(context),
-            parent as ViewGroup?, false)
+            parent as ViewGroup?, false
+        )
 
         addView(view.root)
     }
-
 
 
 }

@@ -1,30 +1,18 @@
 package com.cornershop.counterstest
 
 
-import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
-import com.cornershop.counterstest.presentation.MainActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
-import org.junit.Rule
 import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
 abstract class BaseUITest {
 
-
-    val mActivityRule =  ActivityScenarioRule(MainActivity::class.java)
-        @Rule get
-
-
-    val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
     fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {

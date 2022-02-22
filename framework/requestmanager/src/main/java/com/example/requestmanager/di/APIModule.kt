@@ -1,3 +1,5 @@
+@file:Suppress("unused", "unused")
+
 package com.example.requestmanager.di
 
 import com.cornershop.counterstest.data.RemoteCounterDataSource

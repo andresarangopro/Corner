@@ -13,7 +13,7 @@ class LocalDatabaseCounterImplTest {
 
     private lateinit var localCounterDataSource: LocalCounterDataSource
 
-    private var listCounterEntity = listOf(CounterEntity(1,"1","",0))
+    private var listCounterEntity = listOf(CounterEntity(1, "1", "", 0))
     private var listCounterDomain = listCounterEntity.toCounterDomainList()
     private val counterId = "1"
 

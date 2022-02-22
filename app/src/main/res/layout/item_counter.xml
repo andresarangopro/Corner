@@ -36,6 +36,7 @@
 
     <ImageView
         android:id="@+id/ivDec"
+        android:contentDescription="@string/desc_iv_dec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,9 +46,10 @@
 
     <ImageView
         android:id="@+id/ivInc"
+        android:contentDescription="@string/desc_iv_inc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvCount"
         app:layout_constraintTop_toTopOf="parent"
@@ -64,8 +66,8 @@
         android:id="@+id/tvCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="%d"
-        android:layout_marginLeft="@dimen/margin_small"
+        android:text="@string/count"
+        android:layout_marginStart="@dimen/margin_small"
         style="@style/Theme.BoldTextView"
         android:padding="@dimen/margin_small"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,6 +76,7 @@
 
     <ImageView
         android:id="@+id/ivCheck"
+        android:contentDescription="@string/desc_iv_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

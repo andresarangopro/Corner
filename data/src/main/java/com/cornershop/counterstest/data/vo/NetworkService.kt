@@ -7,12 +7,13 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-val NetworkError ="checkinternet"
+const val NetworkError = "checkinternet"
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun isOnline(c: Context):Boolean{
-    var connectivityManager: ConnectivityManager = c.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    var networkInfo = connectivityManager.activeNetwork
+fun isOnline(c: Context): Boolean {
+    val connectivityManager: ConnectivityManager =
+        c.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val networkInfo = connectivityManager.activeNetwork
     val actNw = connectivityManager.getNetworkCapabilities(networkInfo) ?: return false
     return when {
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
