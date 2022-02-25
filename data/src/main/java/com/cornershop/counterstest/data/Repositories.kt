@@ -14,7 +14,6 @@ class CounterRepositoryImp @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CounterRepository {
 
-
     override suspend fun getListCounter(): FetchingState = withContext(dispatcher) {
         val remoteResponse = remoteCounterDataSource.getListCounters()
 
@@ -24,31 +23,33 @@ class CounterRepositoryImp @Inject constructor(
                 remoteResponse.data.forEach {
                     localCounterDataSource.createCounterFromServer(it)
                 }
+                return@withContext FetchingState.Success(remoteResponse.data)
             }
             is CounterRemoteState.Error -> {
-                when (val localListCounter = localCounterDataSource.getListCounters()) {
-                    is CounterState.Success -> {
-                        return@withContext FetchingState.Success(localListCounter.data)
-                    }
-                    is CounterState.Error -> {
-                        return@withContext FetchingState.Error(remoteResponse.error)
-                    }
-                }
+                getLocalCounterList()
             }
         }
-        return@withContext FetchingState.Success(remoteResponse.data)
     }
 
+    private suspend fun getLocalCounterList():FetchingState= withContext(dispatcher){
+        when (val localListCounter = localCounterDataSource.getListCounters()) {
+            is CounterState.Success -> {
+                return@withContext FetchingState.Success(localListCounter.data)
+            }
+            is CounterState.Error -> {
+                return@withContext FetchingState.Error(localListCounter.error)
+            }
+        }
+    }
 
     override suspend fun createCounter(title: String?): FetchingState =
         withContext(dispatcher) {
-            val remoteResponse = remoteCounterDataSource.createCounter(title)
-
-            when (remoteResponse) {
+            when (val remoteResponse = remoteCounterDataSource.createCounter(title)) {
                 is CounterRemoteState.Success -> {
                     remoteResponse.data.forEach {
                         localCounterDataSource.createCounterFromServer(it)
                     }
+                    return@withContext FetchingState.Success(remoteResponse.data)
                 }
                 is CounterRemoteState.Error -> {
                     val createLocalCounter = localCounterDataSource.createCounter(title?.let {
@@ -58,102 +59,65 @@ class CounterRepositoryImp @Inject constructor(
                         )
                     })
                     if (createLocalCounter == 1.toLong()) {
-                        when (val localListCounter = localCounterDataSource.getListCounters()) {
-                            is CounterState.Success -> {
-                                return@withContext FetchingState.Success(localListCounter.data)
-                            }
-                            is CounterState.Error -> {
-                                return@withContext FetchingState.Error(remoteResponse.error)
-                            }
-                        }
+                        getLocalCounterList()
                     } else {
                         return@withContext FetchingState.Error(remoteResponse.error)
                     }
                 }
             }
-            return@withContext FetchingState.Success(remoteResponse.data)
         }
-
 
     override suspend fun increaseCounter(counter: Counter): FetchingState =
         withContext(dispatcher) {
-            val remoteResponse = remoteCounterDataSource.increaseCounter(counter.id_remote)
-
-            when (remoteResponse) {
+            when (val remoteResponse = remoteCounterDataSource.increaseCounter(counter.id_remote)) {
                 is CounterRemoteState.Success -> {
                     localCounterDataSource.increaseCounter(counter)
+                    return@withContext FetchingState.Success(remoteResponse.data)
                 }
                 is CounterRemoteState.Error -> {
                     val increaseCounter = localCounterDataSource.increaseCounter(counter)
                     if (increaseCounter == 1) {
-                        when (val localListCounter = localCounterDataSource.getListCounters()) {
-                            is CounterState.Success -> {
-                                return@withContext FetchingState.Success(localListCounter.data)
-                            }
-                            is CounterState.Error -> {
-                                return@withContext FetchingState.Error(remoteResponse.error)
-                            }
-                        }
+                        getLocalCounterList()
                     } else {
                         return@withContext FetchingState.Error(remoteResponse.error)
                     }
                 }
             }
-            return@withContext FetchingState.Success(remoteResponse.data)
         }
 
     override suspend fun decreaseCounter(counter: Counter): FetchingState =
         withContext(dispatcher) {
-            val remoteResponse = remoteCounterDataSource.decreaseCounter(counter.id_remote)
-
-            when (remoteResponse) {
+            when (val remoteResponse = remoteCounterDataSource.decreaseCounter(counter.id_remote)) {
                 is CounterRemoteState.Success -> {
                     localCounterDataSource.decreaseCounter(counter)
+                    return@withContext FetchingState.Success(remoteResponse.data)
                 }
                 is CounterRemoteState.Error -> {
                     val increaseCounter = localCounterDataSource.decreaseCounter(counter)
                     if (increaseCounter == 1) {
-                        when (val localListCounter = localCounterDataSource.getListCounters()) {
-                            is CounterState.Success -> {
-                                return@withContext FetchingState.Success(localListCounter.data)
-                            }
-                            is CounterState.Error -> {
-                                return@withContext FetchingState.Error(remoteResponse.error)
-                            }
-                        }
+                        getLocalCounterList()
                     } else {
                         return@withContext FetchingState.Error(remoteResponse.error)
                     }
                 }
             }
-            return@withContext FetchingState.Success(remoteResponse.data)
         }
-
 
     override suspend fun deleteCounter(counter: List<Counter>): FetchingState =
         withContext(dispatcher) {
-            val remoteResponse = remoteCounterDataSource.deleteCounter(counter)
-
-            when (remoteResponse) {
+            when (val remoteResponse = remoteCounterDataSource.deleteCounter(counter)) {
                 is CounterRemoteState.Success -> {
                     localCounterDataSource.deleteCounter(counter)
+                    return@withContext FetchingState.Success(remoteResponse.data)
                 }
                 is CounterRemoteState.Error -> {
                     val increaseCounter = localCounterDataSource.deleteCounter(counter)
                     if (increaseCounter == 1) {
-                        when (val localListCounter = localCounterDataSource.getListCounters()) {
-                            is CounterState.Success -> {
-                                return@withContext FetchingState.Success(localListCounter.data)
-                            }
-                            is CounterState.Error -> {
-                                return@withContext FetchingState.Error(remoteResponse.error)
-                            }
-                        }
+                        getLocalCounterList()
                     } else {
                         return@withContext FetchingState.Error(remoteResponse.error)
                     }
                 }
             }
-            return@withContext FetchingState.Success(remoteResponse.data)
         }
 }
