@@ -2,6 +2,7 @@ package com.example.requestmanager
 
 import com.cornershop.counterstest.data.RemoteCounterDataSource
 import com.cornershop.counterstest.data.vo.CounterRemoteState
+import com.cornershop.counterstest.entities.Counter
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -50,10 +51,12 @@ class CounterDataSource @Inject constructor(private val api: CounterService) :
         }
     }
 
-    override suspend fun deleteCounter(id: String?): CounterRemoteState {
+    override suspend fun deleteCounter(listCounters: List<Counter>): CounterRemoteState {
         return try {
             CounterRemoteState.Success(
-                api.deleteCounter(id?.toIdJson()).toListCounterDomain()
+                listCounters.map {
+                    api.deleteCounter(it.id.toString().toIdJson())
+                }.last().toListCounterDomain()
             )
         } catch (ex: Exception) {
             CounterRemoteState.Error(error = ex)

@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.framwework.databasemanager
+package com.cornershop.counterstest.framework.databasemanager
 
 import com.cornershop.counterstest.data.LocalCounterDataSource
 import com.nhaarman.mockitokotlin2.doReturn

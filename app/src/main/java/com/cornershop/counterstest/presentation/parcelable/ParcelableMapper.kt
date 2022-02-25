@@ -15,6 +15,18 @@ fun List<Counter>.toListCounterAdapter() = this.map {
 
 }
 
+fun List<CounterAdapter>.toListCounter() = this.map {
+    it.run {
+        Counter(
+            id,
+            id_remote,
+            title,
+            count
+        )
+    }
+
+}
+
 fun CounterAdapter.toCounterDomain() = Counter(
     id,
     id_remote,

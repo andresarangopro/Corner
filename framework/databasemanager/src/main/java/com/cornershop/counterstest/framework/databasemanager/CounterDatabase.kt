@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.framwework.databasemanager
+package com.cornershop.counterstest.framework.databasemanager
 
 
 import androidx.room.Database

@@ -8,5 +8,5 @@ interface CounterRepository {
     suspend fun createCounter(title: String?): FetchingState
     suspend fun increaseCounter(counter: Counter): FetchingState
     suspend fun decreaseCounter(counter: Counter): FetchingState
-    suspend fun deleteCounter(counter: Counter): FetchingState
+    suspend fun deleteCounter(counter: List<Counter>): FetchingState
 }

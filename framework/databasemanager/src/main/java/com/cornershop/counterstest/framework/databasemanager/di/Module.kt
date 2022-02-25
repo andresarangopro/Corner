@@ -1,12 +1,12 @@
-package com.cornershop.counterstest.framwework.databasemanager.di
+package com.cornershop.counterstest.framework.databasemanager.di
 
 
 import android.content.Context
 import androidx.room.Room
 import com.cornershop.counterstest.data.LocalCounterDataSource
-import com.cornershop.counterstest.framwework.databasemanager.CounterDao
-import com.cornershop.counterstest.framwework.databasemanager.CounterDatabase
-import com.cornershop.counterstest.framwework.databasemanager.LocalCounterDataSourceImpl
+import com.cornershop.counterstest.framework.databasemanager.CounterDao
+import com.cornershop.counterstest.framework.databasemanager.CounterDatabase
+import com.cornershop.counterstest.framework.databasemanager.LocalCounterDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.cornershop.counterstest.data.di
 
 import com.cornershop.counterstest.data.CounterRepository
-import com.cornershop.counterstest.data.CounterRespositoryImp
+import com.cornershop.counterstest.data.CounterRepositoryImp
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataModule {
     @Binds
     abstract fun providesCounterRepository(
-        counterRespositoryImp: CounterRespositoryImp
+        counterRepositoryImp: CounterRepositoryImp
     ): CounterRepository
 
 }

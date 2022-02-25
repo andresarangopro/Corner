@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 class MessageDialog(private var builder: Builder) : DialogFragment() {
 
 
-    private var dbuilder: AlertDialog.Builder? = null
+    private var dialogBuilder: AlertDialog.Builder? = null
     var title: String? = null
     private var nameButtonOk: String? = null
     private var nameButtonCancel: String? = null
@@ -30,24 +30,24 @@ class MessageDialog(private var builder: Builder) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
-            this.dbuilder = builder.dialog
-            dbuilder?.setMessage(messageD)
+            this.dialogBuilder = builder.dialog
+            dialogBuilder?.setMessage(messageD)
             if (this.nameButtonOk != null) {
-                dbuilder?.setPositiveButton(
+                dialogBuilder?.setPositiveButton(
                     this.nameButtonOk,
                     this.actionButtonOk
                 )
             }
 
             if (this.nameButtonCancel != null) {
-                dbuilder?.setNegativeButton(
+                dialogBuilder?.setNegativeButton(
                     this.nameButtonCancel,
                     this.actionButtonCancel
                 )
             }
 
             // Create the AlertDialog object and return it
-            dbuilder?.create()
+            dialogBuilder?.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 

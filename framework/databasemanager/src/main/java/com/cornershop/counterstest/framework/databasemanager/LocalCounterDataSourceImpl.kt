@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.framwework.databasemanager
+package com.cornershop.counterstest.framework.databasemanager
 
 import com.cornershop.counterstest.data.LocalCounterDataSource
 import com.cornershop.counterstest.data.vo.CounterState
@@ -31,9 +31,9 @@ class LocalCounterDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteCounter(counter: Counter?): Int {
-        val counterEntity = counter?.toCounterEntity()
-        return counterDao.deleteCounter(counterEntity)
+    override suspend fun deleteCounter(counter: List<Counter>): Int {
+        val counterEntityList = counter.toCounterEntityList()
+        return counterEntityList.map { counterDao.deleteCounter(it) }.last()
     }
 
     override suspend fun increaseCounter(counter: Counter): Int {

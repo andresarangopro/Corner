@@ -8,6 +8,7 @@ import com.cornershop.counterstest.data.vo.FetchingState
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toCounterDomain
+import com.cornershop.counterstest.presentation.parcelable.toListCounter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
 import com.cornershop.counterstest.presentation.viewModels.utils.State
 import com.cornershop.counterstest.usecase.CounterUseCases
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CountersViewModel @Inject constructor(
-    private val counterUseCases: CounterUseCases
+    private val counterUseCases: CounterUseCases,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _states = MutableLiveData<State<CounterNavigation>>()
@@ -103,23 +105,23 @@ class CountersViewModel @Inject constructor(
         }
     }
 
+
     fun deleteSelectedCounters() {
-        viewModelScope.launch {
-            _listSelectedCounterAdapter.value?.map {
-                when (val fetchState = counterUseCases.deleteCounterUseCase(it.toCounterDomain())) {
-                    is FetchingState.Success -> {
-                        withContext(Dispatchers.Main) {
-                            setListAdapter(fetchState.data)
-                            setListCounterOnView()
-                        }
-                    }
-                    is FetchingState.Error -> {
-                        withContext(Dispatchers.Main) {
-                            _states.value = State(CounterNavigation.HideLoaderSave)
-                        }
-                    }
+        viewModelScope.launch(mainDispatcher) {
+            when (val fetchState =
+                _listSelectedCounterAdapter.value?.toListCounter()
+                    ?.let { counterUseCases.deleteCounterUseCase(it) }) {
+                is FetchingState.Success -> {
+                    setListAdapter(fetchState.data)
+                    setListCounterOnView()
+
                 }
+                is FetchingState.Error -> {
+                    _states.value = State(CounterNavigation.HideLoaderSave)
+                }
+
             }
+
             _states.value = State(CounterNavigation.HideSelectedItemState)
             _states.value = State(
                 CounterNavigation.UpdateCounterList(
@@ -171,6 +173,7 @@ class CountersViewModel @Inject constructor(
 
             is CounterEvent.DeleteSelectedCounters -> {
                 deleteSelectedCounters()
+
             }
 
             is CounterEvent.GetListCounterFromSwipe -> {
@@ -258,6 +261,5 @@ class CountersViewModel @Inject constructor(
     private fun clearSelectedArray() {
         listSelectedCAdapter.clear()
         _listSelectedCounterAdapter.value = listSelectedCAdapter
-
     }
 }

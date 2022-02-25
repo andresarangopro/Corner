@@ -1,24 +1,22 @@
 package com.cornershop.counterstest.data
 
-
-import android.content.Context
 import com.cornershop.counterstest.data.vo.*
 import com.cornershop.counterstest.entities.Counter
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class CounterRespositoryImp @Inject constructor(
+class CounterRepositoryImp @Inject constructor(
     private val remoteCounterDataSource: RemoteCounterDataSource,
     private val localCounterDataSource: LocalCounterDataSource,
-    @ApplicationContext val appContext: Context
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CounterRepository {
 
 
-    override suspend fun getListCounter(): FetchingState = withContext(Dispatchers.IO) {
-        val remoteResponse = getNetworkStateCounterSource(remoteCounterDataSource.getListCounters())
+    override suspend fun getListCounter(): FetchingState = withContext(dispatcher) {
+        val remoteResponse = remoteCounterDataSource.getListCounters()
 
         when (remoteResponse) {
             is CounterRemoteState.Success -> {
@@ -43,9 +41,8 @@ class CounterRespositoryImp @Inject constructor(
 
 
     override suspend fun createCounter(title: String?): FetchingState =
-        withContext(Dispatchers.IO) {
-            val remoteResponse =
-                getNetworkStateCounterSource(remoteCounterDataSource.createCounter(title))
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.createCounter(title)
 
             when (remoteResponse) {
                 is CounterRemoteState.Success -> {
@@ -79,9 +76,8 @@ class CounterRespositoryImp @Inject constructor(
 
 
     override suspend fun increaseCounter(counter: Counter): FetchingState =
-        withContext(Dispatchers.IO) {
-            val remoteResponse =
-                getNetworkStateCounterSource(remoteCounterDataSource.increaseCounter(counter.id_remote))
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.increaseCounter(counter.id_remote)
 
             when (remoteResponse) {
                 is CounterRemoteState.Success -> {
@@ -107,9 +103,8 @@ class CounterRespositoryImp @Inject constructor(
         }
 
     override suspend fun decreaseCounter(counter: Counter): FetchingState =
-        withContext(Dispatchers.IO) {
-            val remoteResponse =
-                getNetworkStateCounterSource(remoteCounterDataSource.decreaseCounter(counter.id_remote))
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.decreaseCounter(counter.id_remote)
 
             when (remoteResponse) {
                 is CounterRemoteState.Success -> {
@@ -135,10 +130,9 @@ class CounterRespositoryImp @Inject constructor(
         }
 
 
-    override suspend fun deleteCounter(counter: Counter): FetchingState =
-        withContext(Dispatchers.IO) {
-            val remoteResponse =
-                getNetworkStateCounterSource(remoteCounterDataSource.deleteCounter(counter.id_remote))
+    override suspend fun deleteCounter(counter: List<Counter>): FetchingState =
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.deleteCounter(counter)
 
             when (remoteResponse) {
                 is CounterRemoteState.Success -> {
@@ -162,13 +156,4 @@ class CounterRespositoryImp @Inject constructor(
             }
             return@withContext FetchingState.Success(remoteResponse.data)
         }
-
-    private fun getNetworkStateCounterSource(counterRemoteState: CounterRemoteState): CounterRemoteState {
-        return if (isOnline(appContext))
-            counterRemoteState
-        else
-            CounterRemoteState.Error(RuntimeException(NetworkError))
-
-    }
-
 }

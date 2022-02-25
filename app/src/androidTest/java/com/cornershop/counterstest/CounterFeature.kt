@@ -59,7 +59,7 @@ class CounterFragmentShould : BaseUITest() {
     }
 
     @Test
-    fun showResultsOnSuccesSearch() {
+    fun showResultsOnSuccessSearch() {
         createANewCounter(1000)
 
         onView(withId(R.id.searchView))

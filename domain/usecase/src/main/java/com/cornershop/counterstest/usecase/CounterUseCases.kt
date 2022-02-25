@@ -5,20 +5,20 @@ import com.cornershop.counterstest.data.vo.FetchingState
 import com.cornershop.counterstest.entities.Counter
 import javax.inject.Inject
 
-class CounterUseCases @Inject constructor(private val counterRespository: CounterRepository) {
+class CounterUseCases @Inject constructor(private val counterRepository: CounterRepository) {
 
-    suspend fun getListCounterUseCase(): FetchingState = counterRespository.getListCounter()
+    suspend fun getListCounterUseCase(): FetchingState = counterRepository.getListCounter()
 
     suspend fun createCounterUseCase(title: String?): FetchingState =
-        counterRespository.createCounter(title)
+        counterRepository.createCounter(title)
 
     suspend fun increaseCounterUseCase(counter: Counter): FetchingState =
-        counterRespository.increaseCounter(counter)
+        counterRepository.increaseCounter(counter)
 
     suspend fun decreaseCounterUseCase(counter: Counter): FetchingState =
-        counterRespository.decreaseCounter(counter)
+        counterRepository.decreaseCounter(counter)
 
-    suspend fun deleteCounterUseCase(counter: Counter): FetchingState =
-        counterRespository.deleteCounter(counter)
+    suspend fun deleteCounterUseCase(counter: List<Counter>): FetchingState =
+        counterRepository.deleteCounter(counter)
 
 }

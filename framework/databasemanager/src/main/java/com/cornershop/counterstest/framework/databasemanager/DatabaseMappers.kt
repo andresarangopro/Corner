@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.framwework.databasemanager
+package com.cornershop.counterstest.framework.databasemanager
 
 import com.cornershop.counterstest.entities.Counter
 
@@ -18,6 +18,8 @@ fun Counter.toCounterEntity() = CounterEntity(
     title,
     count
 )
+
+fun List<Counter>.toCounterEntityList() = map(Counter::toCounterEntity)
 
 fun Counter.toCounterEntitySetCount(countSet: Int) = CounterEntity(
     id,
