@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.cornershop.counterstest.presentation.dialogs
 
 import androidx.appcompat.app.AlertDialog

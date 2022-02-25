@@ -123,7 +123,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline4"
-                    app:layout_constraintTop_toTopOf="@+id/guideline5">
+                    app:layout_constraintTop_toTopOf="@+id/guideline5"
+                    tools:targetApi="p">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"

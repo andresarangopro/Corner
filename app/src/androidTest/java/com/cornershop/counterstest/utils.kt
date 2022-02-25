@@ -12,21 +12,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.platform.app.InstrumentationRegistry
 
 
-inline fun waitUntilLoaded(crossinline recyclerProvider: () -> RecyclerView) {
-    Espresso.onIdle()
-
-    lateinit var recycler: RecyclerView
-
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        recycler = recyclerProvider()
-    }
-
-    while (recycler.hasPendingAdapterUpdates()) {
-        Thread.sleep(10)
-    }
-}
-
-
 fun getText(matcher: ViewInteraction): String {
     var text = String()
     matcher.perform(object : ViewAction {

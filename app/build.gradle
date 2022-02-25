@@ -62,7 +62,7 @@ dependencies {
     implementation retrofit
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    //lyfecycle_viewmodel
+    //lifecycle view model
     implementation lifeCycleViewModel
 
     //lifecycle live data

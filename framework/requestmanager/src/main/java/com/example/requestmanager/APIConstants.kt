@@ -2,7 +2,7 @@ package com.example.requestmanager
 
 object APIConstants {
 
-    const val BASE_API_URL = "http://192.168.1.8:3000/api/v1/"
+    const val BASE_API_URL = "http://192.168.1.7:3000/api/v1/"
 
     const val ENDPOINT_COUNTERS = "counters"
     const val ENDPOINT_COUNTER = "counter"

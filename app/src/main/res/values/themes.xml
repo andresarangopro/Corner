@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.CountersNormal" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -32,7 +32,7 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
-    <style name="Theme.NormalBoldTextView" parent="TextAppearance.AppCompat.Medium">
+    <style name="Theme.NormalBoldTextView" parent="TextAppearance.AppCompat.Medium" tools:keep="@style/Theme_NormalBoldTextView">
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -41,7 +41,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="editTextTheme" parent="Theme.AppCompat.Light">
+    <style name="editTextTheme" parent="Theme.AppCompat.Light" tools:keep="@style/editTextTheme">
         <item name="colorControlActivated">@color/orange</item>
     </style>
 

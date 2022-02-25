@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Others -->
     <string name="app_name">Counters Test</string>
     <string name="welcome_title">Counters</string>
@@ -18,34 +18,34 @@
         <item quantity="one">%d time</item>
         <item quantity="other">%d times</item>
     </plurals>
-    <string name="n_selected">%d selected</string>
-    <string name="error_load_counters_title">Couldn’t load the counters</string>
-    <string name="error_creating_counter_title">Couldn’t create the counter</string>
-    <string name="error_updating_counter_title">Couldn’t update the “%s” counter to %d</string>
-    <string name="error_deleting_counter_title">Couldn’t delete the counter</string>
-    <string name="connection_error_description">The Internet connection appears to be offline.</string>
-    <string name="generic_error_description">There has been a problem.</string>
-    <string name="retry">Retry</string>
+    <string name="n_selected" tools:ignore="PluralsCandidate">%d selected</string>
+    <string name="error_load_counters_title" tools:keep="@string/error_load_counters_title">Couldn’t load the counters</string>
+    <string name="error_creating_counter_title" tools:keep="@string/error_creating_counter_title">Couldn’t create the counter</string>
+    <string name="error_updating_counter_title" tools:keep="@string/error_updating_counter_title">Couldn’t update the “%s” counter to %d</string>
+    <string name="error_deleting_counter_title" tools:keep="@string/error_deleting_counter_title">Couldn’t delete the counter</string>
+    <string name="connection_error_description" tools:keep="@string/connection_error_description">The Internet connection appears to be offline.</string>
+    <string name="generic_error_description" tools:keep="@string/generic_error_description">There has been a problem.</string>
+    <string name="retry" tools:keep="@string/retry">Retry</string>
     <string name="save">Save</string>
-    <string name="ok">OK</string>
+    <string name="ok" tools:keep="@string/ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="dismiss">Dismiss</string>
-    <string name="share">Share</string>
-    <string name="examples">Examples</string>
-    <string name="examples_description">Select an example to add it to your counters.</string>
+    <string name="dismiss" tools:keep="@string/dismiss">Dismiss</string>
+    <string name="share" tools:keep="@string/share">Share</string>
+    <string name="examples" tools:keep="@string/examples">Examples</string>
+    <string name="examples_description" tools:keep="@string/examples_description">Select an example to add it to your counters.</string>
     <string name="delete">Delete</string>
     <string name="create_counter">Create counter</string>
     <string name="counter_name_label">Name</string>
     <string name="counter_name_hint">Cups of coffee</string>
-    <string name="create_counter_disclaimer">Give it a name. Creative block? See examples.</string>
+    <string name="create_counter_disclaimer" tools:keep="@string/create_counter_disclaimer">Give it a name. Creative block? See examples.</string>
     <string name="delete_x_question">Delete "%s"?</string>
-    <string name="n_per_counter_name">%d × %s</string>
+    <string name="n_per_counter_name" tools:keep="@string/n_per_counter_name">%d × %s</string>
     <string name="preference_file_key">get_started</string>
     <string name="pref_previously_started">previous_started</string>
     <string name="err_empty_title">Should give a name</string>
     <string name="count">%d</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" tools:keep="@string/hello_blank_fragment">Hello blank fragment</string>
     <string name="desc_iv_cancel">Is a icon of a x to cancel an action</string>
     <string name="desc_iv_delete">Is a icon of a garbage collector to cancel an action</string>
     <string name="desc_iv_dec">Is a icon of a cross to increase counters</string>

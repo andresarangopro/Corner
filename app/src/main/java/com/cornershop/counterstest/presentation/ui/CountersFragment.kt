@@ -1,5 +1,6 @@
 package com.cornershop.counterstest.presentation.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ class CountersFragment : Fragment() {
 
     private val viewModel: CountersViewModel by viewModels()
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun validateEvents(state: State<CounterNavigation>?) {
         state?.getContentIfNotHandled()?.let { navigation ->
             when (navigation) {

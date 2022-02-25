@@ -122,7 +122,8 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline4"
                     app:layout_constraintTop_toTopOf="@+id/guideline5"
-                    tools:visibility="visible">
+                    tools:visibility="visible"
+                    tools:ignore="UnusedAttribute">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"

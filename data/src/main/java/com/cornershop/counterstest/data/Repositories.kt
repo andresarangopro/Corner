@@ -15,9 +15,8 @@ class CounterRepositoryImp @Inject constructor(
 ) : CounterRepository {
 
     override suspend fun getListCounter(): FetchingState = withContext(dispatcher) {
-        val remoteResponse = remoteCounterDataSource.getListCounters()
 
-        when (remoteResponse) {
+        when (val remoteResponse = remoteCounterDataSource.getListCounters()) {
             is CounterRemoteState.Success -> {
                 localCounterDataSource.deleteAllCounterTable()
                 remoteResponse.data.forEach {
@@ -31,7 +30,7 @@ class CounterRepositoryImp @Inject constructor(
         }
     }
 
-    private suspend fun getLocalCounterList():FetchingState= withContext(dispatcher){
+    private suspend fun getLocalCounterList(): FetchingState = withContext(dispatcher) {
         when (val localListCounter = localCounterDataSource.getListCounters()) {
             is CounterState.Success -> {
                 return@withContext FetchingState.Success(localListCounter.data)

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.cornershop.counterstest.presentation.ui.customviews
 
 import android.content.Context
