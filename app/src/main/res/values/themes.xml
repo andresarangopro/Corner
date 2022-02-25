@@ -41,7 +41,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-
     <style name="editTextTheme" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/orange</item>
     </style>

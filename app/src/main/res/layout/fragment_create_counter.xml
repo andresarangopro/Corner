@@ -61,14 +61,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline12"
         app:expandedHintEnabled="false"
-        android:theme="@style/editTextTheme"
         android:hint="@string/counter_name_label">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/editTextTheme"
+            android:backgroundTint="@color/transparent"
+            android:paddingTop="@dimen/margin_normal_3"
             android:hint="@string/counter_name_hint"
             />
 
