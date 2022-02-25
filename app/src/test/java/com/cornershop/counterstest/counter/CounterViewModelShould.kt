@@ -1,5 +1,6 @@
 package com.cornershop.counterstest.counter
 
+import com.cornershop.counterstest.data.vo.FetchingState
 import com.cornershop.counterstest.entities.Counter
 import com.cornershop.counterstest.presentation.parcelable.CounterAdapter
 import com.cornershop.counterstest.presentation.parcelable.toListCounterAdapter
@@ -9,13 +10,14 @@ import com.cornershop.counterstest.presentation.viewModels.utils.State
 import com.cornershop.counterstest.usecase.CounterUseCases
 import com.cornershop.counterstest.utils.BaseUnitTest
 import com.cornershop.counterstest.utils.captureValues
-import com.example.requestmanager.vo.FetchingState
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
 
 class CounterViewModelShould : BaseUnitTest() {
 
@@ -23,59 +25,35 @@ class CounterViewModelShould : BaseUnitTest() {
 
     private var id: String = "2"
 
-    private val counterlist: List<Counter> = listOf(Counter(0, "1", "title", 1))
+    private val counterList: List<Counter> = listOf(Counter(0, "1", "title", 1))
 
-    private val CounterlistCreatingTitle: List<Counter> =
-        listOf(Counter(0, "1", "title", 1), Counter(0, "$id", "$title", 0))
+    private val counterListCreatingTitle: List<Counter> =
+        listOf(Counter(0, "1", "title", 1), Counter(0, id, title, 0))
 
-    private val counterAdapterlist: List<CounterAdapter> = counterlist.toListCounterAdapter()
+    private val counterAdapterList: List<CounterAdapter> = counterList.toListCounterAdapter()
 
-    private val expected = Result.success(counterlist)
-
-    private val expectedCounterlistCreatingTitle = Result.success(CounterlistCreatingTitle)
-
-    private val expectedCounterlistAdapterCreatingTitle =
-        Result.success(CounterlistCreatingTitle.toListCounterAdapter())
-
-    private val exception = RuntimeException("Something went wrong")
-
-    private val error = Result.failure<List<Counter>>(exception)
-
-    private lateinit var viewModel: CountersViewModel
-
-    private val errorExpected = "dummyApiError"
-
-    private val mockNavigation: CounterNavigation = mock()
-
-    private val mockErrorIOException = mock<IOException> {
-        onBlocking { message } doReturn errorExpected
-    }
-
-    //
-    private val mockCounterUserCaseError = mock<CounterUseCases> {
-        onBlocking { getListCounterUseCase() } doReturn FetchingState.Error(mockErrorIOException)
-        onBlocking { createCounterUseCase(title) } doReturn FetchingState.Error(mockErrorIOException)
-    }
+    private val expectedCounterListAdapterCreatingTitle =
+        Result.success(counterListCreatingTitle.toListCounterAdapter())
 
 
     private val mockCounterUserCaseSuccess = mock<CounterUseCases> {
-        onBlocking { getListCounterUseCase() } doReturn FetchingState.Success(counterlist)
+        onBlocking { getListCounterUseCase() } doReturn FetchingState.Success(counterList)
         onBlocking { createCounterUseCase(title) } doReturn FetchingState.Success(
-            CounterlistCreatingTitle
+            counterListCreatingTitle
         )
-        onBlocking { increaseCounterUseCase(counterlist[0]) } doReturn FetchingState.Success(
-            counterlist
+        onBlocking { increaseCounterUseCase(counterList[0]) } doReturn FetchingState.Success(
+            counterList
         )
-        onBlocking { decreaseCounterUseCase(counterlist[0]) } doReturn FetchingState.Success(
-            counterlist
+        onBlocking { decreaseCounterUseCase(counterList[0]) } doReturn FetchingState.Success(
+            counterList
         )
-        onBlocking { deleteCounterUseCase(counterlist[0]) } doReturn FetchingState.Success(
-            counterlist
+        onBlocking { deleteCounterUseCase(counterList) } doReturn FetchingState.Success(
+            counterList
         )
     }
 
     @Test
-    fun `when getListConterUseCase is called it should be called only once time`() {
+    fun `when getListCounterUseCase is called it should be called only once time`() {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
         runBlocking {
             verify(mockCounterUserCaseSuccess, times(1)).getListCounterUseCase()
@@ -87,7 +65,7 @@ class CounterViewModelShould : BaseUnitTest() {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
         runBlocking {
             //verify(mockCounterUserCaseSuccess, times(1)).getListCounterUseCase()
-            assert(counterAdapterlist.equals(viewModel.listCounterAdapter.value))
+            assert(counterAdapterList == viewModel.listCounterAdapter.value)
         }
     }
 
@@ -96,7 +74,7 @@ class CounterViewModelShould : BaseUnitTest() {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
         runBlocking {
             viewModel.states.captureValues {
-                assertEquals(State(CounterNavigation.setLoaderState(false)), values.last())
+                assertEquals(State(CounterNavigation.SetLoaderState(false)), values.last())
             }
         }
     }
@@ -117,7 +95,7 @@ class CounterViewModelShould : BaseUnitTest() {
         runBlocking {
             viewModel.createCounter(title)
             assert(
-                expectedCounterlistAdapterCreatingTitle.getOrNull()?.equals(
+                expectedCounterListAdapterCreatingTitle.getOrNull()?.equals(
                     viewModel.listCounterAdapter.value
                 ) == true
             )
@@ -127,26 +105,26 @@ class CounterViewModelShould : BaseUnitTest() {
     @Test
     fun `when increaseCounter is called it should be called only once time`() = runBlockingTest {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
-        viewModel.increaseCounter(counterlist[0])
-        verify(mockCounterUserCaseSuccess, times(1)).increaseCounterUseCase(counterlist[0])
+        viewModel.increaseCounter(counterList[0])
+        verify(mockCounterUserCaseSuccess, times(1)).increaseCounterUseCase(counterList[0])
     }
 
     @Test
     fun `when decrease is called it should be called only once time`() = runBlockingTest {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
-        viewModel.decreaseCounter(counterlist[0])
-        verify(mockCounterUserCaseSuccess, times(1)).decreaseCounterUseCase(counterlist[0])
+        viewModel.decreaseCounter(counterList[0])
+        verify(mockCounterUserCaseSuccess, times(1)).decreaseCounterUseCase(counterList[0])
 
     }
 
     @Test
     fun `when delete is called it should be called only once time`() = runBlockingTest {
         val viewModel = CountersViewModel(mockCounterUserCaseSuccess)
-        val selectCounter = counterAdapterlist[0]
+        val selectCounter = counterAdapterList[0]
         selectCounter.selected = true
         viewModel.selectedCounter(selectCounter)
         viewModel.deleteSelectedCounters()
-        verify(mockCounterUserCaseSuccess, times(1)).deleteCounterUseCase(counterlist[0])
+        verify(mockCounterUserCaseSuccess, times(1)).deleteCounterUseCase(counterList)
     }
 
 }

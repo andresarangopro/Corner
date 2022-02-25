@@ -5,7 +5,4 @@ import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
-class CountersApplication:Application() {
-
-
-}
+class CountersApplication : Application()

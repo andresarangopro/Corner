@@ -1,40 +1,35 @@
 package com.cornershop.counterstest
 
-import android.content.Intent
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotContains
 import com.adevinta.android.barista.internal.matcher.DrawableMatcher.Companion.withDrawable
-import com.cornershop.counterstest.databinding.FragmentCountersBinding
-import com.cornershop.counterstest.presentation.viewModels.CountersViewModel
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class CounterFragmentShould:BaseUITest() {
+class CounterFragmentShould : BaseUITest() {
 
-    val STRING_TO_BE_TYPED = "TestOnSearch"
-    val NEW_COUNTER_TEST= "Test"
-    val expectedNoCounterText = "No results"
-    val DELETE = "DELETE"
+    private val stringToBeTyped = "TestOnSearch"
+    private val newCounterTest = "Test"
+    private val expectedNoCounterText = "No results"
+    private val delete = "DELETE"
 
     @Test
     fun navigateToCreateCounterScreen() {
         onView(withId(R.id.btnAddCounter)).perform(click())
-        assertDisplayed(R.id.createCounterView )
+        assertDisplayed(R.id.createCounterView)
     }
 
     @Test
-    fun showErrorOnNoResults(){
+    fun showErrorOnNoResults() {
         onView(withId(R.id.searchView))
-            .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard())
+            .perform(typeText(stringToBeTyped), closeSoftKeyboard())
 
         onView(withId(R.id.tvMessage))
             .check(matches(withText(expectedNoCounterText)))
@@ -42,19 +37,19 @@ class CounterFragmentShould:BaseUITest() {
 
 
     @Test
-    fun createdANewCounterWithNetworkSuccessResponseTest(){
+    fun createdANewCounterWithNetworkSuccessResponseTest() {
         createANewCounter(1000)
         deleteCounter()
     }
 
     @Test
-    fun createdANewCounterWithNetworkErrorResponseTest(){
+    fun createdANewCounterWithNetworkErrorResponseTest() {
         createANewCounter(1000)
         deleteCounter()
     }
 
     @Test
-    fun showItemTimesWhenThereAreCountersItems(){
+    fun showItemTimesWhenThereAreCountersItems() {
         createANewCounter(1000)
 
         onView(withId(R.id.viewTimesItems))
@@ -64,11 +59,11 @@ class CounterFragmentShould:BaseUITest() {
     }
 
     @Test
-    fun showResultsOnSuccesSearch(){
+    fun showResultsOnSuccessSearch() {
         createANewCounter(1000)
 
         onView(withId(R.id.searchView))
-            .perform(typeText(NEW_COUNTER_TEST), closeSoftKeyboard())
+            .perform(typeText(newCounterTest), closeSoftKeyboard())
 
         onView(
             CoreMatchers.allOf(
@@ -76,14 +71,14 @@ class CounterFragmentShould:BaseUITest() {
                 isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
             )
         )
-            .check(matches(withText("${NEW_COUNTER_TEST}")))
+            .check(matches(withText(newCounterTest)))
             .check(matches(isDisplayed()))
 
         deleteCounter()
     }
 
     @Test
-    fun deleteCounterTest(){
+    fun deleteCounterTest() {
         createANewCounter(1000)
         deleteCounter()
 
@@ -92,12 +87,14 @@ class CounterFragmentShould:BaseUITest() {
     @Test
     fun increaseItemOnRecyclerView() {
         createANewCounter(1000)
-        var count = getText  (onView(
+        val count = getText(
+            onView(
                 CoreMatchers.allOf(
                     withId(R.id.tvCount),
                     isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
                 )
-                )).toInt()
+            )
+        ).toInt()
 
         onView(
             CoreMatchers.allOf(
@@ -113,7 +110,7 @@ class CounterFragmentShould:BaseUITest() {
                 withId(R.id.tvCount),
                 isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
             )
-        ).check(matches(withText("${count+1}")))
+        ).check(matches(withText("${count + 1}")))
 
         Thread.sleep(2000)
 
@@ -123,12 +120,14 @@ class CounterFragmentShould:BaseUITest() {
     @Test
     fun decreaseItemOnRecyclerView() {
         createANewCounter(1000)
-        var count = getText  (onView(
+        val count = getText(
+            onView(
                 CoreMatchers.allOf(
                     withId(R.id.tvCount),
                     isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
                 )
-                )).toInt()
+            )
+        ).toInt()
 
         onView(
             CoreMatchers.allOf(
@@ -144,17 +143,17 @@ class CounterFragmentShould:BaseUITest() {
                 withId(R.id.tvCount),
                 isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
             )
-        ).check(matches(withText("${if(count > 0) count-1 else 0}")))
+        ).check(matches(withText("${if (count > 0) count - 1 else 0}")))
 
         Thread.sleep(2000)
 
         deleteCounter()
     }
 
-    private fun createANewCounter(threadSleep:Long) {
+    private fun createANewCounter(threadSleep: Long) {
         onView(withId(R.id.btnAddCounter)).perform(click())
         onView(withId(R.id.etCounter))
-            .perform(typeText(NEW_COUNTER_TEST), closeSoftKeyboard())
+            .perform(typeText(newCounterTest), closeSoftKeyboard())
         onView(withId(R.id.tvSave)).perform(click())
 
         Thread.sleep(threadSleep)
@@ -171,7 +170,7 @@ class CounterFragmentShould:BaseUITest() {
                 isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
             )
         )
-            .check(matches(withText("${NEW_COUNTER_TEST}")))
+            .check(matches(withText(newCounterTest)))
             .check(matches(isDisplayed()))
     }
 
@@ -185,7 +184,7 @@ class CounterFragmentShould:BaseUITest() {
             .check(matches(isDisplayed()))
             .perform(click())
 
-        onView(withText(DELETE)).perform(click())
+        onView(withText(delete)).perform(click())
     }
 
     private fun selectCounterItem() {
@@ -195,7 +194,7 @@ class CounterFragmentShould:BaseUITest() {
                 isDescendantOfA(nthChildOf(withId(R.id.recyclerView), 0))
             )
         )
-            .check(matches(withText("${NEW_COUNTER_TEST}")))
+            .check(matches(withText(newCounterTest)))
             .check(matches(isDisplayed()))
             .perform(click())
 

@@ -20,11 +20,12 @@ import com.cornershop.counterstest.presentation.viewModels.utils.State
 
 @AndroidEntryPoint
 class CreateCounterFragment : Fragment() {
-    
-    private var _binding:FragmentCreateCounterBinding?=null
+
+    private var _binding: FragmentCreateCounterBinding? = null
+
     private val binding get() = _binding
 
-    private val viewModel:CountersViewModel by viewModels()
+    private val viewModel: CountersViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,50 +39,55 @@ class CreateCounterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.ivCancel?.setOnClickListener{
-            val action = CreateCounterFragmentDirections.actionCreateCounterFragmentToCountersFragment()
-            val navOptions = NavOptions.Builder().setPopUpTo(R.id.createCounterFragment, true).build()
+        binding?.ivCancel?.setOnClickListener {
+            val action =
+                CreateCounterFragmentDirections.actionCreateCounterFragmentToCountersFragment()
+            val navOptions =
+                NavOptions.Builder().setPopUpTo(R.id.createCounterFragment, true).build()
             findNavController().navigate(action, navOptions)
         }
 
         binding?.tvSave?.setOnClickListener {
-            when(validateNameCounter()){
-                true->{
+            when (validateNameCounter()) {
+                true -> {
                     viewModel.postEvent(
                         CounterEvent.CreateCounter(
                             binding?.etCounter?.text.toString()
                         )
                     )
                 }
-                false->{binding?.etCounter?.setError(resources.getString(R.string.err_empty_title))}
+                false -> {
+                    binding?.etCounter?.error = resources.getString(R.string.err_empty_title)
+                }
             }
         }
     }
 
-    private fun validateNameCounter():Boolean{
+    private fun validateNameCounter(): Boolean {
         return binding?.etCounter?.text?.isNotBlank() == true && binding?.etCounter?.text?.isNotEmpty() == true
     }
 
     private fun validateEvents(state: State<CounterNavigation>?) {
         state?.getContentIfNotHandled()?.let { navigation ->
-           when(navigation){
-               is CounterNavigation.showLoaderSave->{
-                   handlerLoaderSave(View.GONE,View.VISIBLE)
-               }
-               is CounterNavigation.hideLoaderSave->{
-                   handlerLoaderSave(View.VISIBLE,View.GONE)
-                   cleanInputs()
-               }
-           }
+            when (navigation) {
+                is CounterNavigation.ShowLoaderSave -> {
+                    handlerLoaderSave(View.GONE, View.VISIBLE)
+                }
+                is CounterNavigation.HideLoaderSave -> {
+                    handlerLoaderSave(View.VISIBLE, View.GONE)
+                    cleanInputs()
+                }
+                else -> {}
+            }
         }
     }
 
-    private fun handlerLoaderSave(visibilityText:Int,visibilityLoader:Int){
+    private fun handlerLoaderSave(visibilityText: Int, visibilityLoader: Int) {
         binding?.tvSave?.visibility = visibilityText
         binding?.loaderSave?.visibility = visibilityLoader
     }
 
-    fun cleanInputs(){
+    private fun cleanInputs() {
         binding?.etCounter?.setText("")
     }
 

@@ -1,4 +1,6 @@
-package com.example.requestmanager.vo
+@file:Suppress("unused")
+
+package com.cornershop.counterstest.data.vo
 
 import com.cornershop.counterstest.entities.Counter
 

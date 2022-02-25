@@ -1,6 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Theme.CountersNormal" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.CountersNormal" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorOnPrimary">@color/black</item>
@@ -13,10 +13,11 @@
         <item name="android:textColorTertiary">@color/light_gray</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="Theme.CountersWelcome" parent="Theme.CountersNormal">
-        <item name="android:windowBackground">@color/welcome_background</item>
+         <item name="android:windowBackground">@color/welcome_background</item>
     </style>
 
     <style name="Theme.GrayMediumTextView" parent="TextAppearance.AppCompat.Medium">
@@ -40,17 +41,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.LoginScreenTheme" parent="Theme.CountersNormal">
-        <item name="colorOnSurface">@color/orange</item>
-    </style>
 
     <style name="editTextTheme" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/orange</item>
     </style>
 
-    <style name="style_hint_orange_text_input_layout" parent="Widget.Design.TextInputLayout">
-        <item name="android:textColorHint">@color/orange</item>
-        <item name="android:textColor">@color/orange</item>
-    </style>
+
 
 </resources>

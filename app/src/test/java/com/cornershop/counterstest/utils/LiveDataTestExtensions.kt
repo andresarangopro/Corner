@@ -1,13 +1,16 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package com.cornershop.counterstest.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+
 /**
  * Represents a list of capture values from a LiveData.
  */
 class LiveDataValueCapture<T> {
 
-    val lock = Any()
+    private val lock = Any()
 
     private val _values = mutableListOf<T?>()
     val values: List<T?>
@@ -44,7 +47,7 @@ inline fun <T> LiveData<T>.captureValues(block: LiveDataValueCapture<T>.() -> Un
  */
 fun <T> LiveData<T>.getValueForTest(): T? {
     var value: T? = null
-    var observer = Observer<T> {
+    val observer = Observer<T> {
         value = it
     }
     observeForever(observer)

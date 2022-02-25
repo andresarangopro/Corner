@@ -1,4 +1,4 @@
-package com.cornershop.counterstest.framwework.databasemanager
+package com.cornershop.counterstest.framework.databasemanager
 
 import com.cornershop.counterstest.data.LocalCounterDataSource
 import com.nhaarman.mockitokotlin2.doReturn
@@ -13,7 +13,7 @@ class LocalDatabaseCounterImplTest {
 
     private lateinit var localCounterDataSource: LocalCounterDataSource
 
-    private var listCounterEntity = listOf(CounterEntity(1,"1","",0))
+    private var listCounterEntity = listOf(CounterEntity(1, "1", "", 0))
     private var listCounterDomain = listCounterEntity.toCounterDomainList()
     private val counterId = "1"
 

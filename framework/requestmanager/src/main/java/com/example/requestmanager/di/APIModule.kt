@@ -1,3 +1,5 @@
+@file:Suppress("unused", "unused")
+
 package com.example.requestmanager.di
 
 import com.cornershop.counterstest.data.RemoteCounterDataSource
@@ -9,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RquestManagerModule {
+abstract class RequestManagerModule {
 
     @Binds
     abstract fun providesCounterRemoteSource(

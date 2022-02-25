@@ -1,13 +1,12 @@
-package com.cornershop.counterstest.framwework.databasemanager.di
-
+package com.cornershop.counterstest.framework.databasemanager.di
 
 
 import android.content.Context
 import androidx.room.Room
 import com.cornershop.counterstest.data.LocalCounterDataSource
-import com.cornershop.counterstest.framwework.databasemanager.CounterDao
-import com.cornershop.counterstest.framwework.databasemanager.CounterDatabase
-import com.cornershop.counterstest.framwework.databasemanager.LocalCounterDataSourceImpl
+import com.cornershop.counterstest.framework.databasemanager.CounterDao
+import com.cornershop.counterstest.framework.databasemanager.CounterDatabase
+import com.cornershop.counterstest.framework.databasemanager.LocalCounterDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,19 +15,17 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
-
-
 @Module
 @InstallIn(SingletonComponent::class)
 object Module {
 
-    private val DATABASE_NAME = "counter_db"
+    private const val DATABASE_NAME = "counter_db"
 
     @Provides
     @Singleton
     fun provideCounterDatabase(
         @ApplicationContext app: Context
-    ):CounterDatabase = Room.databaseBuilder(
+    ): CounterDatabase = Room.databaseBuilder(
         app,
         CounterDatabase::class.java,
         DATABASE_NAME
@@ -38,12 +35,12 @@ object Module {
     @Singleton
     fun providesCounterLocalDataSource(
         localCounterDatasourceImpl: LocalCounterDataSourceImpl
-    ):LocalCounterDataSource {
+    ): LocalCounterDataSource {
         return localCounterDatasourceImpl
     }
-    
+
     @Provides
     @Singleton
-    fun provideCounterDao(db: CounterDatabase):CounterDao = db.counterDao()
+    fun provideCounterDao(db: CounterDatabase): CounterDao = db.counterDao()
 
 }

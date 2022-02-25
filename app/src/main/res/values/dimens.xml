@@ -4,10 +4,8 @@
     <dimen name="margin_big_2">90dp</dimen>
     <dimen name="margin_big_1">60dp</dimen>
     <dimen name="margin_normal_1">16dp</dimen>
-    <dimen name="margin_normal_2">24dp</dimen>
     <dimen name="margin_normal_3">32dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="search_view_radius">5dp</dimen>
-    <dimen name="font_size_small">15sp</dimen>
     <dimen name="circular_progress_size">20dp</dimen>
 </resources>

@@ -1,3 +1,5 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package com.cornershop.counterstest.utils
 
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +12,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 /**
- * MainCoroutineRule installs a TestCoroutineDispatcher for Disptachers.Main.
+ * MainCoroutineRule installs a TestCoroutineDispatcher for Dispatchers.Main.
  *
  * Since it extends TestCoroutineScope, you can directly launch coroutines on the MainCoroutineRule
  * as a [CoroutineScope]:
@@ -46,7 +48,7 @@ import org.junit.runner.Description
  * @param dispatcher if provided, this [TestCoroutineDispatcher] will be used.
  */
 @ExperimentalCoroutinesApi
-class MainCoroutineScopeRule(val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
+class MainCoroutineScopeRule(private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
     TestWatcher(),
     TestCoroutineScope by TestCoroutineScope(dispatcher) {
     override fun starting(description: Description?) {

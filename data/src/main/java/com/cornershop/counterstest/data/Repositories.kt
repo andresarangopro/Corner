@@ -1,188 +1,159 @@
 package com.cornershop.counterstest.data
 
-
-import android.content.Context
-import com.cornershop.counterstest.data.vo.CounterRemoteState
-import com.cornershop.counterstest.data.vo.NetworkError
-import com.cornershop.counterstest.data.vo.isOnline
+import com.cornershop.counterstest.data.vo.*
 import com.cornershop.counterstest.entities.Counter
-import com.example.requestmanager.vo.CounterState
-import com.example.requestmanager.vo.FetchingState
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class CounterRespositoryImp @Inject constructor(
+class CounterRepositoryImp @Inject constructor(
     private val remoteCounterDataSource: RemoteCounterDataSource,
     private val localCounterDataSource: LocalCounterDataSource,
-    @ApplicationContext val appContext: Context
-):CounterRepository{
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : CounterRepository {
 
 
-    override suspend fun getListCounter(): FetchingState = withContext(Dispatchers.IO) {
-        var remoteResponse = getNetworkStateCounterSource(remoteCounterDataSource.getListCounters())
+    override suspend fun getListCounter(): FetchingState = withContext(dispatcher) {
+        val remoteResponse = remoteCounterDataSource.getListCounters()
 
-        when(remoteResponse){
-             is CounterRemoteState.Success ->{
+        when (remoteResponse) {
+            is CounterRemoteState.Success -> {
                 localCounterDataSource.deleteAllCounterTable()
-                remoteResponse.data.forEach{
+                remoteResponse.data.forEach {
                     localCounterDataSource.createCounterFromServer(it)
                 }
             }
-            is CounterRemoteState.Error->{
-                var localListCounter = localCounterDataSource.getListCounters()
-                when(localListCounter){
-                    is CounterState.Success->{
+            is CounterRemoteState.Error -> {
+                when (val localListCounter = localCounterDataSource.getListCounters()) {
+                    is CounterState.Success -> {
                         return@withContext FetchingState.Success(localListCounter.data)
                     }
-                    is CounterState.Error->{
+                    is CounterState.Error -> {
                         return@withContext FetchingState.Error(remoteResponse.error)
                     }
                 }
-                return@withContext FetchingState.Error(remoteResponse.error)
             }
         }
         return@withContext FetchingState.Success(remoteResponse.data)
     }
 
 
+    override suspend fun createCounter(title: String?): FetchingState =
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.createCounter(title)
 
-    override suspend fun createCounter(title: String?) : FetchingState = withContext(Dispatchers.IO) {
-        var remoteResponse = getNetworkStateCounterSource( remoteCounterDataSource.createCounter(title))
-
-        when(remoteResponse){
-            is CounterRemoteState.Success->{
-                remoteResponse.data.forEach{
-                    localCounterDataSource.createCounterFromServer(it)
-                }
-            }
-            is CounterRemoteState.Error->{
-                var createLocalCounter = localCounterDataSource.createCounter(title?.let {
-                    Counter(0,"0",
-                        it,0)
-                })
-                if(createLocalCounter.equals(1)){
-                    var localListCounter = localCounterDataSource.getListCounters()
-                    when(localListCounter){
-                        is CounterState.Success->{
-                            return@withContext FetchingState.Success(localListCounter.data)
-                        }
-                        is CounterState.Error->{
-                            return@withContext FetchingState.Error(remoteResponse.error)
-                        }
+            when (remoteResponse) {
+                is CounterRemoteState.Success -> {
+                    remoteResponse.data.forEach {
+                        localCounterDataSource.createCounterFromServer(it)
                     }
-                    return@withContext FetchingState.Error(remoteResponse.error)
-                }else{
-                    return@withContext FetchingState.Error(remoteResponse.error)
                 }
-
-                return@withContext FetchingState.Error(remoteResponse.error)
+                is CounterRemoteState.Error -> {
+                    val createLocalCounter = localCounterDataSource.createCounter(title?.let {
+                        Counter(
+                            0, "0",
+                            it, 0
+                        )
+                    })
+                    if (createLocalCounter == 1.toLong()) {
+                        when (val localListCounter = localCounterDataSource.getListCounters()) {
+                            is CounterState.Success -> {
+                                return@withContext FetchingState.Success(localListCounter.data)
+                            }
+                            is CounterState.Error -> {
+                                return@withContext FetchingState.Error(remoteResponse.error)
+                            }
+                        }
+                    } else {
+                        return@withContext FetchingState.Error(remoteResponse.error)
+                    }
+                }
             }
+            return@withContext FetchingState.Success(remoteResponse.data)
         }
-        return@withContext FetchingState.Success(remoteResponse.data)
-    }
 
 
-    override suspend fun increaseCounter(counter:Counter): FetchingState = withContext(Dispatchers.IO) {
-        var remoteResponse = getNetworkStateCounterSource( remoteCounterDataSource.increaseCounter(counter.id_remote))
+    override suspend fun increaseCounter(counter: Counter): FetchingState =
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.increaseCounter(counter.id_remote)
 
-        when(remoteResponse){
-            is CounterRemoteState.Success->{
+            when (remoteResponse) {
+                is CounterRemoteState.Success -> {
                     localCounterDataSource.increaseCounter(counter)
-            }
-            is CounterRemoteState.Error->{
-                var increaseCounter = localCounterDataSource.increaseCounter(counter)
-                if(increaseCounter.equals(1)){
-                    var localListCounter = localCounterDataSource.getListCounters()
-                    when(localListCounter){
-                        is CounterState.Success->{
-                            return@withContext FetchingState.Success(localListCounter.data)
-                        }
-                        is CounterState.Error->{
-                            return@withContext FetchingState.Error(remoteResponse.error)
-                        }
-                    }
-                    return@withContext FetchingState.Error(remoteResponse.error)
-                }else{
-                    return@withContext FetchingState.Error(remoteResponse.error)
                 }
-
-                return@withContext FetchingState.Error(remoteResponse.error)
-            }
-        }
-        return@withContext FetchingState.Success(remoteResponse.data)
-    }
-
-    override suspend fun decreaseCounter(counter:Counter): FetchingState = withContext(Dispatchers.IO) {
-        var remoteResponse = getNetworkStateCounterSource( remoteCounterDataSource.decreaseCounter(counter.id_remote))
-
-        when(remoteResponse){
-            is CounterRemoteState.Success->{
-                localCounterDataSource.decreaseCounter(counter)
-            }
-            is CounterRemoteState.Error->{
-                var increaseCounter = localCounterDataSource.decreaseCounter(counter)
-                if(increaseCounter.equals(1)){
-                    var localListCounter = localCounterDataSource.getListCounters()
-                    when(localListCounter){
-                        is CounterState.Success->{
-                            return@withContext FetchingState.Success(localListCounter.data)
+                is CounterRemoteState.Error -> {
+                    val increaseCounter = localCounterDataSource.increaseCounter(counter)
+                    if (increaseCounter == 1) {
+                        when (val localListCounter = localCounterDataSource.getListCounters()) {
+                            is CounterState.Success -> {
+                                return@withContext FetchingState.Success(localListCounter.data)
+                            }
+                            is CounterState.Error -> {
+                                return@withContext FetchingState.Error(remoteResponse.error)
+                            }
                         }
-                        is CounterState.Error->{
-                            return@withContext FetchingState.Error(remoteResponse.error)
-                        }
+                    } else {
+                        return@withContext FetchingState.Error(remoteResponse.error)
                     }
-                    return@withContext FetchingState.Error(remoteResponse.error)
-                }else{
-                    return@withContext FetchingState.Error(remoteResponse.error)
                 }
-
-                return@withContext FetchingState.Error(remoteResponse.error)
             }
+            return@withContext FetchingState.Success(remoteResponse.data)
         }
-        return@withContext FetchingState.Success(remoteResponse.data)
-    }
 
+    override suspend fun decreaseCounter(counter: Counter): FetchingState =
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.decreaseCounter(counter.id_remote)
 
-    override suspend fun deleteCounter(counter:Counter): FetchingState= withContext(Dispatchers.IO) {
-        var remoteResponse = getNetworkStateCounterSource(remoteCounterDataSource.deleteCounter(counter.id_remote))
-
-        when(remoteResponse){
-            is CounterRemoteState.Success->{
-                localCounterDataSource.deleteCounter(counter)
-            }
-            is CounterRemoteState.Error->{
-                var increaseCounter = localCounterDataSource.deleteCounter(counter)
-                if(increaseCounter.equals(1)){
-                    var localListCounter = localCounterDataSource.getListCounters()
-                    when(localListCounter){
-                        is CounterState.Success->{
-                            return@withContext FetchingState.Success(localListCounter.data)
+            when (remoteResponse) {
+                is CounterRemoteState.Success -> {
+                    localCounterDataSource.decreaseCounter(counter)
+                }
+                is CounterRemoteState.Error -> {
+                    val increaseCounter = localCounterDataSource.decreaseCounter(counter)
+                    if (increaseCounter == 1) {
+                        when (val localListCounter = localCounterDataSource.getListCounters()) {
+                            is CounterState.Success -> {
+                                return@withContext FetchingState.Success(localListCounter.data)
+                            }
+                            is CounterState.Error -> {
+                                return@withContext FetchingState.Error(remoteResponse.error)
+                            }
                         }
-                        is CounterState.Error->{
-                            return@withContext FetchingState.Error(remoteResponse.error)
-                        }
+                    } else {
+                        return@withContext FetchingState.Error(remoteResponse.error)
                     }
-                    return@withContext FetchingState.Error(remoteResponse.error)
-                }else{
-                    return@withContext FetchingState.Error(remoteResponse.error)
                 }
-
-                return@withContext FetchingState.Error(remoteResponse.error)
             }
+            return@withContext FetchingState.Success(remoteResponse.data)
         }
-        return@withContext FetchingState.Success(remoteResponse.data)
-    }
 
-    private fun getNetworkStateCounterSource(counterRemoteState: CounterRemoteState): CounterRemoteState {
-        var remoteResponse: CounterRemoteState? = null
-        if (isOnline(appContext))
-            remoteResponse =counterRemoteState
-        else
-            remoteResponse = CounterRemoteState.Error(RuntimeException(NetworkError))
-        return remoteResponse
-    }
 
+    override suspend fun deleteCounter(counter: List<Counter>): FetchingState =
+        withContext(dispatcher) {
+            val remoteResponse = remoteCounterDataSource.deleteCounter(counter)
+
+            when (remoteResponse) {
+                is CounterRemoteState.Success -> {
+                    localCounterDataSource.deleteCounter(counter)
+                }
+                is CounterRemoteState.Error -> {
+                    val increaseCounter = localCounterDataSource.deleteCounter(counter)
+                    if (increaseCounter == 1) {
+                        when (val localListCounter = localCounterDataSource.getListCounters()) {
+                            is CounterState.Success -> {
+                                return@withContext FetchingState.Success(localListCounter.data)
+                            }
+                            is CounterState.Error -> {
+                                return@withContext FetchingState.Error(remoteResponse.error)
+                            }
+                        }
+                    } else {
+                        return@withContext FetchingState.Error(remoteResponse.error)
+                    }
+                }
+            }
+            return@withContext FetchingState.Success(remoteResponse.data)
+        }
 }

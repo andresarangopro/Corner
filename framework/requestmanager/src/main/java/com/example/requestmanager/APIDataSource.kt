@@ -2,11 +2,13 @@ package com.example.requestmanager
 
 import com.cornershop.counterstest.data.RemoteCounterDataSource
 import com.cornershop.counterstest.data.vo.CounterRemoteState
+import com.cornershop.counterstest.entities.Counter
 import java.lang.Exception
 import javax.inject.Inject
 
 
-class CounterDataSource @Inject constructor(private val api:CounterService): RemoteCounterDataSource {
+class CounterDataSource @Inject constructor(private val api: CounterService) :
+    RemoteCounterDataSource {
 
     override suspend fun getListCounters(): CounterRemoteState {
         return try {
@@ -40,7 +42,7 @@ class CounterDataSource @Inject constructor(private val api:CounterService): Rem
     }
 
     override suspend fun decreaseCounter(id: String?): CounterRemoteState {
-         return try {
+        return try {
             CounterRemoteState.Success(
                 api.decreaseCounter(id?.toIdJson()).toListCounterDomain()
             )
@@ -49,10 +51,12 @@ class CounterDataSource @Inject constructor(private val api:CounterService): Rem
         }
     }
 
-    override suspend fun deleteCounter(id: String?): CounterRemoteState {
+    override suspend fun deleteCounter(listCounters: List<Counter>): CounterRemoteState {
         return try {
             CounterRemoteState.Success(
-                api.deleteCounter(id?.toIdJson()).toListCounterDomain()
+                listCounters.map {
+                    api.deleteCounter(it.id.toString().toIdJson())
+                }.last().toListCounterDomain()
             )
         } catch (ex: Exception) {
             CounterRemoteState.Error(error = ex)

@@ -29,14 +29,14 @@ fun <T> MutableLiveData<T>.modifyValue(transform: T.() -> T) {
     this.value = this.value?.run(transform)
 }
 
-val DIFF_CALLBACK: DiffUtil.ItemCallback<CounterAdapter> = object:
-    DiffUtil.ItemCallback<CounterAdapter>(){
+val DIFF_CALLBACK: DiffUtil.ItemCallback<CounterAdapter> = object :
+    DiffUtil.ItemCallback<CounterAdapter>() {
     override fun areItemsTheSame(oldItem: CounterAdapter, newItem: CounterAdapter): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: CounterAdapter, newItem: CounterAdapter): Boolean {
-        return oldItem.equals(newItem);
+        return oldItem == newItem
     }
 
 }
